@@ -5,6 +5,9 @@ import PageStyles from "../other/Styles";
 import Header from "../components.js/Header";
 import { COLORS } from "../other/Colors";
 import { Icon } from "@rneui/themed";
+import { Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get("window");
 
 const Logo = require('../../assets/images/logo.png');
 const Ogre = require('../../assets/images/ogre.png');
@@ -57,7 +60,7 @@ const HomeStyles = StyleSheet.create({
     logo: {
         width: "100%",
         resizeMode: 'contain',
-        marginTop: "30%"
+        marginTop: height * 0.1
     },
     randomSentence: {
         textAlign: "center",
@@ -66,21 +69,23 @@ const HomeStyles = StyleSheet.create({
         fontSize: 14,
     },
     randomImage: {
-        marginTop: "20%",
-        marginBottom: "2%",
-        width: 172,
-        height: 172
+        marginTop: height * 0.1,
+        marginBottom: height * 0.02,
+        width: height * 0.2,
+        height: height * 0.2,
+        alignSelf: "center",
     },
     button: {
         backgroundColor: COLORS.SecondBack,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-around",
-        width: "70%",
+        justifyContent: "space-evenly",
+        width: height * 0.4,
         padding: 15,
         borderRadius: 30,
-        marginTop: "20%"
+        marginTop: height * 0.1,
+        alignSelf: "center"
     },
     buttonText: {
         fontSize: 15,

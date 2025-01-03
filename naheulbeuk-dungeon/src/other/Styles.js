@@ -1,6 +1,9 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { COLORS } from "./Colors";
+import { Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get("window");
 
 const PageStyles = StyleSheet.create({
     page: {
@@ -8,12 +11,11 @@ const PageStyles = StyleSheet.create({
         backgroundColor: COLORS.MainBack,
     },
     header: {
-        marginTop: "10%"
+        marginTop: height * 0.05
     },
     content: {
-        paddingLeft: "5%",
-        paddingRight: "5%",
-        alignItems: "center"
+        paddingLeft: width * 0.05,
+        paddingRight: width * 0.05
     }
 });
 
