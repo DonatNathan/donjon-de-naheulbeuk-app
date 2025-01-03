@@ -1,0 +1,23 @@
+[
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode1.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 1",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/main.png",
+        "duration": 225
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode2.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 2",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/nain.png",
+        "duration": 275
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode3.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 3",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/elfe.png",
+        "duration": 260
+    }
+]
