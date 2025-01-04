@@ -9,6 +9,7 @@ import PageStyles from "../other/Styles";
 import Header from '../components.js/Header';
 import { COLORS } from '../other/Colors';
 import podcasts from '../../assets/files/podcasts.json';
+import BottomBar from '../components.js/BottomNavigator';
 
 const {width, height} = Dimensions.get('window');
 
@@ -17,17 +18,20 @@ const Podcasts = ({navigation}) => {
     const [page, setPage] = useState("Music");
 
     return (
-        <View style={PageStyles.page}>
-            <Header />
+		<>
 			{page == "Library" ? <Library navigation={navigation} setPage={setPage} /> : <MusicPlayer setPage={setPage} />}
-        </View>
+		</>
     );
 };
 
 const Library = ({navigation, setPage}) => {
     return (
-		<View style={PageStyles.content}>
-
+		<View style={PageStyles.page}>
+			<Header />
+			<View style={PageStyles.content}>
+	
+			</View>
+			<BottomBar navigation={navigation} />
 		</View>
 	);
 };
@@ -124,43 +128,46 @@ const MusicPlayer = ({setPage}) => {
 	}, [progress.duration])
 
 	return (
-		<View style={PageStyles.content}>
-			<View style={MusicPlayerStyles.header}>
-				<TouchableOpacity onPress={() => setPage("Library")}>
-					<Icon name="arrow-back" type="Ionicons" size={30} style={MusicPlayerStyles.arrowBack} />
-				</TouchableOpacity>
-				<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
-				<Icon name="arrow-forward" type="Ionicons" size={30} color={COLORS.MainBack} />
-			</View>
-			<Image source={trackArtwork} style={MusicPlayerStyles.imageWrapper} />
-			<View style={MusicPlayerStyles.songInfos}>
-				<Text style={MusicPlayerStyles.songTitle}>{trackTitle}</Text>
-				<Text style={MusicPlayerStyles.songArtist}>{trackArtist}</Text>
-			</View>
-			<Slider
-				style={MusicPlayerStyles.slider}
-				value={progress.position}
-				minimumValue={0}
-				maximumValue={progress.duration}
-				thumbTintColor={COLORS.MainText}
-				minimumTrackTintColor={COLORS.MainText}
-				maximumTrackTintColor={COLORS.SecondBack}
-				onSlidingComplete={async value => await TrackPlayer.seekTo(value) }
-			/>
-			<View style={MusicPlayerStyles.progressLevelDuration}>
-				<Text>{soundPosition.getMinutes()}:{soundPosition.getSeconds() < 10 ? `0${soundPosition.getSeconds()}` : soundPosition.getSeconds()}</Text>
-				<Text>{soundDuration.getMinutes()}:{soundDuration.getSeconds() < 10 ? `0${soundDuration.getSeconds()}` : soundDuration.getSeconds()}</Text>
-			</View>
-			<View style={MusicPlayerStyles.buttons}>
-				<TouchableOpacity onPress={previoustrack}>
-					<Ionicons name="play-skip-back" size={30} style={MusicPlayerStyles.controlButtons} />
-				</TouchableOpacity>
-				<TouchableOpacity onPress={() => togglePlayBack() }>
-					<Ionicons name={soundState === State.Playing ? 'pause-circle' : 'play-circle'} size={75} style={MusicPlayerStyles.controlButtons} />
-				</TouchableOpacity>
-				<TouchableOpacity onPress={nexttrack}>
-					<Ionicons name="play-skip-forward" size={30} style={MusicPlayerStyles.controlButtons} />
-				</TouchableOpacity>
+		<View style={PageStyles.page}>
+			<Header />
+			<View style={PageStyles.content}>
+				<View style={MusicPlayerStyles.header}>
+					<TouchableOpacity onPress={() => setPage("Library")}>
+						<Icon name="arrow-back" type="Ionicons" size={30} style={MusicPlayerStyles.arrowBack} />
+					</TouchableOpacity>
+					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
+					<Icon name="arrow-forward" type="Ionicons" size={30} color={COLORS.MainBack} />
+				</View>
+				<Image source={trackArtwork} style={MusicPlayerStyles.imageWrapper} />
+				<View style={MusicPlayerStyles.songInfos}>
+					<Text style={MusicPlayerStyles.songTitle}>{trackTitle}</Text>
+					<Text style={MusicPlayerStyles.songArtist}>{trackArtist}</Text>
+				</View>
+				<Slider
+					style={MusicPlayerStyles.slider}
+					value={progress.position}
+					minimumValue={0}
+					maximumValue={progress.duration}
+					thumbTintColor={COLORS.MainText}
+					minimumTrackTintColor={COLORS.MainText}
+					maximumTrackTintColor={COLORS.SecondBack}
+					onSlidingComplete={async value => await TrackPlayer.seekTo(value) }
+				/>
+				<View style={MusicPlayerStyles.progressLevelDuration}>
+					<Text>{soundPosition.getMinutes()}:{soundPosition.getSeconds() < 10 ? `0${soundPosition.getSeconds()}` : soundPosition.getSeconds()}</Text>
+					<Text>{soundDuration.getMinutes()}:{soundDuration.getSeconds() < 10 ? `0${soundDuration.getSeconds()}` : soundDuration.getSeconds()}</Text>
+				</View>
+				<View style={MusicPlayerStyles.buttons}>
+					<TouchableOpacity onPress={previoustrack}>
+						<Ionicons name="play-skip-back" size={30} style={MusicPlayerStyles.controlButtons} />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => togglePlayBack() }>
+						<Ionicons name={soundState === State.Playing ? 'pause-circle' : 'play-circle'} size={75} style={MusicPlayerStyles.controlButtons} />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={nexttrack}>
+						<Ionicons name="play-skip-forward" size={30} style={MusicPlayerStyles.controlButtons} />
+					</TouchableOpacity>
+				</View>
 			</View>
 		</View>
   );
