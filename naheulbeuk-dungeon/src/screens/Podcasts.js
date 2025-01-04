@@ -40,6 +40,8 @@ const MusicPlayer = ({setPage}) => {
 	const [trackArtist, setTrackArtist] = useState();
 	const [trackArtwork, setTrackArtwork] = useState();
 	const [soundState, setSoundState] = useState(State.Playing);
+	const [soundPosition, setSoundPosition] = useState(new Date(0));
+	const [soundDuration, setSoundDuration] = useState(new Date(0));
 	
 	const progress = useProgress();
 
@@ -113,6 +115,14 @@ const MusicPlayer = ({setPage}) => {
 		setupPlayer();
 	}, []);
 
+	useEffect(() => {
+		setSoundPosition(new Date(progress.position * 1000));
+	}, [progress.position])
+
+	useEffect(() => {
+		setSoundDuration(new Date(progress.duration * 1000));
+	}, [progress.duration])
+
 	return (
 		<View style={PageStyles.content}>
 			<View style={MusicPlayerStyles.header}>
@@ -138,9 +148,8 @@ const MusicPlayer = ({setPage}) => {
 				onSlidingComplete={async value => await TrackPlayer.seekTo(value) }
 			/>
 			<View style={MusicPlayerStyles.progressLevelDuration}>
-				{/* TODO : Change the counter */}
-				<Text>{new Date(progress.position * 1000).toLocaleTimeString().substring(3)}</Text>
-				<Text>{new Date((progress.duration) * 1000).toLocaleTimeString().substring(3)}</Text>
+				<Text>{soundPosition.getMinutes()}:{soundPosition.getSeconds() < 10 ? `0${soundPosition.getSeconds()}` : soundPosition.getSeconds()}</Text>
+				<Text>{soundDuration.getMinutes()}:{soundDuration.getSeconds() < 10 ? `0${soundDuration.getSeconds()}` : soundDuration.getSeconds()}</Text>
 			</View>
 			<View style={MusicPlayerStyles.buttons}>
 				<TouchableOpacity onPress={previoustrack}>
