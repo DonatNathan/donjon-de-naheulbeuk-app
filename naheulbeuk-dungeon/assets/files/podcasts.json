@@ -3,21 +3,90 @@
         "url": "assets/assets/sounds/season1/saison1-episode1.mp3",
         "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 1",
         "artist": "Pen of Chaos",
-        "artwork": "assets/assets/images/main.png",
-        "duration": 225
+        "artwork": "assets/assets/images/main.png"
     },
     {
         "url": "assets/assets/sounds/season1/saison1-episode2.mp3",
         "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 2",
         "artist": "Pen of Chaos",
-        "artwork": "assets/assets/images/nain.png",
-        "duration": 275
+        "artwork": "assets/assets/images/nain.png"
     },
     {
         "url": "assets/assets/sounds/season1/saison1-episode3.mp3",
         "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 3",
         "artist": "Pen of Chaos",
-        "artwork": "assets/assets/images/elfe.png",
-        "duration": 260
+        "artwork": "assets/assets/images/elfe.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode4.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 4",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/barbare.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode5.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 5",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/magicienne.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode6.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 6",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/ogre.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode7.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 7",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/main.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode8.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 8",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/nain.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode9.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 9",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/elfe.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode10.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 10",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/barbare.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode11.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 11",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/magicienne.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode12.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 12",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/ogre.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode13.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 13",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/main.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode14.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 14",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/nain.png"
+    },
+    {
+        "url": "assets/assets/sounds/season1/saison1-episode15.mp3",
+        "title": "Le Donjon de Naheulbeuk - Saison 1 - Épisode 15",
+        "artist": "Pen of Chaos",
+        "artwork": "assets/assets/images/elfe.png"
     }
 ]

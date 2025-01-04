@@ -10,14 +10,39 @@ import { Dimensions } from 'react-native';
 const { width, height } = Dimensions.get("window");
 
 const Logo = require('../../assets/images/logo.png');
-const Ogre = require('../../assets/images/ogre.png');
 
 const Sentences = require('../../assets/files/sentences.json');
 
-// TODO: Create the image randomisation
 const RandomImage = () => {
+
+    const randomIndex = Math.floor(Math.random() * 6);
+    let RandomImage;
+
+    switch (randomIndex) {
+        case 0:
+            RandomImage = require('../../assets/images/main.png');
+            break;
+        case 1:
+            RandomImage = require('../../assets/images/nain.png');
+            break;
+        case 2:
+            RandomImage = require('../../assets/images/elfe.png');
+            break;
+        case 3:
+            RandomImage = require('../../assets/images/barbare.png');
+            break;
+        case 4:
+            RandomImage = require('../../assets/images/magicienne.png');
+            break;
+        case 5:
+            RandomImage = require('../../assets/images/ogre.png');
+            break;
+        default:
+            RandomImage = require('../../assets/images/penofchaos.png');
+    }
+
     return (
-        <Image source={Ogre} style={HomeStyles.randomImage} />
+        <Image source={RandomImage} style={HomeStyles.randomImage} />
     );
 };
 
