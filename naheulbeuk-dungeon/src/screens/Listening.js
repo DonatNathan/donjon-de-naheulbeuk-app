@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
-import TrackPlayer, {Capability, State, Event, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
+import TrackPlayer, {State, Event, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
 import Slider from '@react-native-community/slider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Icon} from '@rneui/themed';
 
 import PageStyles from "../other/Styles";
 import Header from '../components.js/Header';
@@ -13,7 +12,7 @@ import podcasts from '../../assets/files/podcasts.json';
 const {width, height} = Dimensions.get('window');
 
 const MusicPlayer = ({setPage, track}) => {
-  
+
 	const podcastsCount = podcasts.length;
 	const [trackIndex, setTrackIndex] = useState();
 	const [trackTitle, setTrackTitle] = useState();
@@ -101,10 +100,10 @@ const MusicPlayer = ({setPage, track}) => {
 			<View style={PageStyles.content}>
 				<View style={MusicPlayerStyles.header}>
 					<TouchableOpacity onPress={async () => {await TrackPlayer.reset(); setPage("Library")}}>
-						<Icon name="arrow-back" type="Ionicons" size={30} style={MusicPlayerStyles.arrowBack} />
+						<Ionicons name="arrow-back" size={30} style={MusicPlayerStyles.arrowBack} />
 					</TouchableOpacity>
 					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
-					<Icon name="arrow-forward" type="Ionicons" size={30} color={COLORS.MainBack} />
+					<Ionicons name="arrow-forward" size={30} color={COLORS.MainBack} />
 				</View>
 				<Image source={trackArtwork} style={MusicPlayerStyles.imageWrapper} />
 				<View style={MusicPlayerStyles.songInfos}>
@@ -115,7 +114,7 @@ const MusicPlayer = ({setPage, track}) => {
 					style={MusicPlayerStyles.slider}
 					value={progress.position}
 					minimumValue={0}
-					maximumValue={progress.duration}
+					maximumValue={progress.duration || 1}
 					thumbTintColor={COLORS.MainText}
 					minimumTrackTintColor={COLORS.MainText}
 					maximumTrackTintColor={COLORS.SecondBack}

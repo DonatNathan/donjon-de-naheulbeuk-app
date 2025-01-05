@@ -4,8 +4,8 @@ import BottomBar from "../components.js/BottomNavigator";
 import PageStyles from "../other/Styles";
 import Header from "../components.js/Header";
 import { COLORS } from "../other/Colors";
-import { Icon } from "@rneui/themed";
 import { Dimensions } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const { width, height } = Dimensions.get("window");
 
@@ -60,7 +60,7 @@ const EnterButton = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.navigate("Podcasts")}>
             <View style={HomeStyles.button}>
                 <Text style={HomeStyles.buttonText}>Entrer dans le Donjon</Text>
-                <Icon name="arrow-forward" type="Ionicons" size={30} color={COLORS.MainText} />
+                <Ionicons name="arrow-forward" size={30} color={COLORS.MainText} />
             </View>
         </TouchableOpacity>
     );
@@ -71,7 +71,7 @@ const Home = ({navigation}) => {
         <View style={PageStyles.page}>
             <Header />
             <View style={PageStyles.content}>
-                <Image source={Logo} style={HomeStyles.logo} />
+                <Image source={Logo} style={HomeStyles.logo} resizeMode="contain" />
                 <RandomImage />
                 <RandomText />
                 <EnterButton navigation={navigation} />
@@ -84,7 +84,6 @@ const Home = ({navigation}) => {
 const HomeStyles = StyleSheet.create({
     logo: {
         width: "100%",
-        resizeMode: 'contain',
         marginTop: height * 0.1
     },
     randomSentence: {
