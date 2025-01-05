@@ -25,18 +25,10 @@ const MusicPlayer = ({setPage, track}) => {
 	
 	const progress = useProgress();
 
-	const setupPlayer = async () => {
+	const launchPlayer = async () => {
 		try {
-			await TrackPlayer.setupPlayer();
-			await TrackPlayer.updateOptions({
-				capabilities: [
-				Capability.Play,
-				Capability.Pause,
-				Capability.SkipToNext,
-				Capability.SkipToPrevious
-				],
-			});
-			await TrackPlayer.add(podcasts);
+            await TrackPlayer.add(podcasts);
+            await TrackPlayer.skip(track);
 			await gettrackdata();
 			await TrackPlayer.play();
 		} catch (error) {
@@ -92,7 +84,7 @@ const MusicPlayer = ({setPage, track}) => {
 	};
 	
 	useEffect(() => {
-		setupPlayer();
+		launchPlayer();
 	}, []);
 
 	useEffect(() => {
@@ -108,7 +100,7 @@ const MusicPlayer = ({setPage, track}) => {
 			<Header />
 			<View style={PageStyles.content}>
 				<View style={MusicPlayerStyles.header}>
-					<TouchableOpacity onPress={() => setPage("Library")}>
+					<TouchableOpacity onPress={async () => {await TrackPlayer.reset(); setPage("Library")}}>
 						<Icon name="arrow-back" type="Ionicons" size={30} style={MusicPlayerStyles.arrowBack} />
 					</TouchableOpacity>
 					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
