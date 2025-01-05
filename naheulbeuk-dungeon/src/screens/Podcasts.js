@@ -1,234 +1,155 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
-import TrackPlayer, {Capability, State, Event, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
-import Slider from '@react-native-community/slider';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, Dimensions, TextInput, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Icon} from '@rneui/themed';
 
 import PageStyles from "../other/Styles";
 import Header from '../components.js/Header';
 import { COLORS } from '../other/Colors';
-import podcasts from '../../assets/files/podcasts.json';
 import BottomBar from '../components.js/BottomNavigator';
+import MusicPlayer from './Listening';
+
+import podcasts from '../../assets/files/podcasts.json';
 
 const {width, height} = Dimensions.get('window');
 
-const Podcasts = ({navigation}) => {
-
-    const [page, setPage] = useState("Music");
-
-    return (
-		<>
-			{page == "Library" ? <Library navigation={navigation} setPage={setPage} /> : <MusicPlayer setPage={setPage} />}
-		</>
-    );
+const SearchBar = ({search, setSearch}) => {
+	return (
+		<View style={LibraryStyles.searchBar}>
+			<TextInput
+				onChangeText={text => {
+                    setSearch(text)
+                }}
+                value={search}
+                placeholder={"Search"}    
+                placeholderTextColor={COLORS.MainText}
+                textAlign={'left'}
+				style={LibraryStyles.input}
+			/>
+			<Ionicons name="search" size={30} color={COLORS.MainText} />
+		</View>
+	);
 };
 
-const Library = ({navigation, setPage}) => {
+const Episode = ({episode}) => {
+
+	const parseArtwork = (artwork) => {
+		const name = artwork.split("/").slice(-1)[0];
+		const path = name.split(".")[0];
+		return path;
+	}
+
+	const imageMap = {
+        main: require('../../assets/images/main.png'),
+        nain: require('../../assets/images/nain.png'),
+        elfe: require('../../assets/images/elfe.png'),
+        barbare: require('../../assets/images/barbare.png'),
+        magicienne: require('../../assets/images/magicienne.png'),
+        ogre: require('../../assets/images/ogre.png'),
+    };
+
+    const MyImage = imageMap[parseArtwork(episode.artwork)];
+
+	return (
+		<View style={LibraryStyles.episode}>
+			<Image source={MyImage} style={LibraryStyles.episodeImage} />
+			<Text style={LibraryStyles.episodeTitle}>{episode.title}</Text>
+			<Text style={LibraryStyles.episodeArtist}>{episode.artist}</Text>
+		</View>
+	);
+};
+
+const Library = ({navigation, setPage, setTrack}) => {
+
+	const [search, setSearch] = useState("");
+
     return (
 		<View style={PageStyles.page}>
 			<Header />
 			<View style={PageStyles.content}>
-	
+				<Text style={LibraryStyles.headerText}>Podcasts</Text>
+				<SearchBar search={search} setSearch={setSearch} />
+				<ScrollView contentContainerStyle={LibraryStyles.episodeList}>
+					{podcasts.map((value, index) => {
+						{
+							if (value.title.includes(search) || value.artist.includes(search)) 
+								return (
+									<TouchableOpacity key={index} onPress={() => {setTrack(index); setPage("Listening")}}>
+										<Episode episode={value}/>
+									</TouchableOpacity>	
+								);
+						}
+					})}
+				</ScrollView>
 			</View>
 			<BottomBar navigation={navigation} />
 		</View>
 	);
 };
 
-const MusicPlayer = ({setPage}) => {
-  
-	const podcastsCount = podcasts.length;
-	const [trackIndex, setTrackIndex] = useState(0);
-	const [trackTitle, setTrackTitle] = useState();
-	const [trackArtist, setTrackArtist] = useState();
-	const [trackArtwork, setTrackArtwork] = useState();
-	const [soundState, setSoundState] = useState(State.Playing);
-	const [soundPosition, setSoundPosition] = useState(new Date(0));
-	const [soundDuration, setSoundDuration] = useState(new Date(0));
-	
-	const progress = useProgress();
+const Podcasts = ({navigation}) => {
 
-	const setupPlayer = async () => {
-		try {
-			await TrackPlayer.setupPlayer();
-			await TrackPlayer.updateOptions({
-				capabilities: [
-				Capability.Play,
-				Capability.Pause,
-				Capability.SkipToNext,
-				Capability.SkipToPrevious
-				],
-			});
-			await TrackPlayer.add(podcasts);
-			await gettrackdata();
-			await TrackPlayer.play();
-		} catch (error) {
-			console.log(error);
-		}
-	};
+    const [page, setPage] = useState("Library");
+	const [track, setTrack] = useState(0);
 
-	// TODO : Fix the deprecation
-	useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
-		if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
-			const track = await TrackPlayer.getTrack(event.nextTrack);
-			setTrackIndex(event.nextTrack);
-			setTrackTitle(track.title);
-			setTrackArtist(track.artist);
-			setTrackArtwork(track.artwork);
-		}
-	});
-
-	const gettrackdata = async () => {
-		let trackIndex = await TrackPlayer.getActiveTrackIndex();
-		let trackObject = await TrackPlayer.getTrack(trackIndex);
-		setTrackIndex(trackIndex);
-		setTrackTitle(trackObject.title);
-		setTrackArtist(trackObject.artist);
-		setTrackArtwork(trackObject.artwork);
-	};
-
-	const togglePlayBack = async () => {
-		const currentTrack = await TrackPlayer.getActiveTrackIndex();
-		if (currentTrack != null) {
-			if ((soundState == State.Paused)) {
-				await TrackPlayer.play();
-				setSoundState(State.Playing);
-			} else {
-				await TrackPlayer.pause();
-				setSoundState(State.Paused);
-			}
-		}
-	};
-
-	const nexttrack = async () => {
-		if (trackIndex < podcastsCount-1) {
-			await TrackPlayer.skipToNext();
-			gettrackdata();
-		};
-	};
-
-	const previoustrack = async () => {
-		if (trackIndex > 0) {
-			await TrackPlayer.skipToPrevious();
-			gettrackdata();
-		};
-	};
-	
-	useEffect(() => {
-		setupPlayer();
-	}, []);
-
-	useEffect(() => {
-		setSoundPosition(new Date(progress.position * 1000));
-	}, [progress.position])
-
-	useEffect(() => {
-		setSoundDuration(new Date(progress.duration * 1000));
-	}, [progress.duration])
-
-	return (
-		<View style={PageStyles.page}>
-			<Header />
-			<View style={PageStyles.content}>
-				<View style={MusicPlayerStyles.header}>
-					<TouchableOpacity onPress={() => setPage("Library")}>
-						<Icon name="arrow-back" type="Ionicons" size={30} style={MusicPlayerStyles.arrowBack} />
-					</TouchableOpacity>
-					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
-					<Icon name="arrow-forward" type="Ionicons" size={30} color={COLORS.MainBack} />
-				</View>
-				<Image source={trackArtwork} style={MusicPlayerStyles.imageWrapper} />
-				<View style={MusicPlayerStyles.songInfos}>
-					<Text style={MusicPlayerStyles.songTitle}>{trackTitle}</Text>
-					<Text style={MusicPlayerStyles.songArtist}>{trackArtist}</Text>
-				</View>
-				<Slider
-					style={MusicPlayerStyles.slider}
-					value={progress.position}
-					minimumValue={0}
-					maximumValue={progress.duration}
-					thumbTintColor={COLORS.MainText}
-					minimumTrackTintColor={COLORS.MainText}
-					maximumTrackTintColor={COLORS.SecondBack}
-					onSlidingComplete={async value => await TrackPlayer.seekTo(value) }
-				/>
-				<View style={MusicPlayerStyles.progressLevelDuration}>
-					<Text>{soundPosition.getMinutes()}:{soundPosition.getSeconds() < 10 ? `0${soundPosition.getSeconds()}` : soundPosition.getSeconds()}</Text>
-					<Text>{soundDuration.getMinutes()}:{soundDuration.getSeconds() < 10 ? `0${soundDuration.getSeconds()}` : soundDuration.getSeconds()}</Text>
-				</View>
-				<View style={MusicPlayerStyles.buttons}>
-					<TouchableOpacity onPress={previoustrack}>
-						<Ionicons name="play-skip-back" size={30} style={MusicPlayerStyles.controlButtons} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => togglePlayBack() }>
-						<Ionicons name={soundState === State.Playing ? 'pause-circle' : 'play-circle'} size={75} style={MusicPlayerStyles.controlButtons} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={nexttrack}>
-						<Ionicons name="play-skip-forward" size={30} style={MusicPlayerStyles.controlButtons} />
-					</TouchableOpacity>
-				</View>
-			</View>
-		</View>
-  );
+    return (
+		<>
+			{page == "Library" ? <Library navigation={navigation} setPage={setPage} setTrack={setTrack} /> : <MusicPlayer setPage={setPage} track={track} />}
+		</>
+    );
 };
 
-const MusicPlayerStyles = StyleSheet.create({
-	header: {
+const LibraryStyles = StyleSheet.create({
+	headerText: {
+		textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 18,
+        color: COLORS.MainText
+	},
+	searchBar: {
 		display: "flex",
 		flexDirection: "row",
-		justifyContent: "space-around",
+		width: width * 0.8,
 		alignItems: "center",
-	},
-	inProgress: {
-		color: COLORS.MainText,
-		fontWeight: "bold",
-		fontSize: 16
-	},
-	songInfos:{
-		width: height * 0.3,
+		justifyContent: "space-between",
+		backgroundColor: COLORS.SecondBack,
+		borderRadius: 15,
+		marginTop: height * 0.03,
 		alignSelf: "center",
-		textAlign: "left"
+		paddingRight: 10,
+		height: height * 0.05
 	},
-	arrowBack: {
-		color: COLORS.MainText
-	},
-	imageWrapper: {
-		alignSelf: "center",
-		width: height * 0.3,
-        height: height * 0.3,
-		marginTop: height * 0.1
-	},
-	songTitle: {
-		fontSize: 20,
-		fontWeight: "bold",
-		color: COLORS.MainText,
-		marginTop: height * 0.02
-	},
-	songArtist: {
-		fontSize: 14,
-		color: COLORS.MainText,
-		marginTop: height * 0.01
-	},
-	controlButtons: {
-		color: COLORS.MainText
-	},
-	buttons: {
-		display: "flex",
-		flexDirection: 'row',
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		marginTop: height * 0.05
-	},
-	progressLevelDuration: {
+	input: {
+		height: "100%",
 		width: "100%",
-		display: "flex",
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginTop: height * 0.01
+		borderRadius: 15,
+		paddingLeft: 10
 	},
-	slider: {
-		marginTop: height * 0.1
+	episodeList: {
+		height: height * 0.7,
+		marginTop: height * 0.03,
+		display: "flex",
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "center"
+	},
+	episode: {
+		width: height * 0.15,
+		margin: height * 0.02
+	}, 
+	episodeImage: {
+		height: height * 0.15,
+		width: height * 0.15
+	},
+	episodeTitle: {
+		color: COLORS.MainText,
+		fontWeight: "bold",
+		fontSize: 12,
+		marginTop: height * 0.007
+	},
+	episodeArtist: {
+		color: COLORS.MainText,
+		fontSize: 10,
+		marginTop: height * 0.007
 	}
 });
 
