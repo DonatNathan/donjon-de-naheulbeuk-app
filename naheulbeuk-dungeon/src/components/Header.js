@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import PageStyles from "../other/Styles";
+
+import PageStyles from "@other/Styles";
 
 const Header = () => {
     return (

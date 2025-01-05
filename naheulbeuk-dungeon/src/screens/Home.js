@@ -1,17 +1,18 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import BottomBar from "../components.js/BottomNavigator";
-import PageStyles from "../other/Styles";
-import Header from "../components.js/Header";
-import { COLORS } from "../other/Colors";
-import { Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Dimensions } from 'react-native';
+
+import BottomBar from "@components/BottomNavigator";
+import PageStyles from "@other/Styles";
+import Header from "@components/Header";
+import { COLORS } from "@other/Colors";
+
+const Logo = require('@assets/images/logo.png');
+const Sentences = require('@assets/files/sentences.json');
 
 const { width, height } = Dimensions.get("window");
 
-const Logo = require('../../assets/images/logo.png');
-
-const Sentences = require('../../assets/files/sentences.json');
 
 const RandomImage = () => {
 
@@ -20,25 +21,25 @@ const RandomImage = () => {
 
     switch (randomIndex) {
         case 0:
-            RandomImage = require('../../assets/images/main.png');
+            RandomImage = require('@assets/images/main.png');
             break;
         case 1:
-            RandomImage = require('../../assets/images/nain.png');
+            RandomImage = require('@assets/images/nain.png');
             break;
         case 2:
-            RandomImage = require('../../assets/images/elfe.png');
+            RandomImage = require('@assets/images/elfe.png');
             break;
         case 3:
-            RandomImage = require('../../assets/images/barbare.png');
+            RandomImage = require('@assets/images/barbare.png');
             break;
         case 4:
-            RandomImage = require('../../assets/images/magicienne.png');
+            RandomImage = require('@assets/images/magicienne.png');
             break;
         case 5:
-            RandomImage = require('../../assets/images/ogre.png');
+            RandomImage = require('@assets/images/ogre.png');
             break;
         default:
-            RandomImage = require('../../assets/images/penofchaos.png');
+            RandomImage = require('@assets/images/penofchaos.png');
     }
 
     return (

@@ -1,23 +1,24 @@
 import React from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
-import BottomBar from "../components.js/BottomNavigator";
-import PageStyles from "../other/Styles";
-import Header from "../components.js/Header";
-import { COLORS } from "../other/Colors";
+
+import BottomBar from "@components/BottomNavigator";
+import PageStyles from "@other/Styles";
+import Header from "@components/Header";
+import { COLORS } from "@other/Colors";
+
+const PenOfChaos = require("@assets/images/penofchaos.png");
 
 const { width, height } = Dimensions.get("window");
-
-const PenOfChaos = require("../../assets/images/penofchaos.png");
 
 const Hero = ({path, name}) => {
 
     const imageMap = {
-        main: require('../../assets/images/main.png'),
-        nain: require('../../assets/images/nain.png'),
-        elfe: require('../../assets/images/elfe.png'),
-        barbare: require('../../assets/images/barbare.png'),
-        magicienne: require('../../assets/images/magicienne.png'),
-        ogre: require('../../assets/images/ogre.png'),
+        main: require('@assets/images/main.png'),
+        nain: require('@assets/images/nain.png'),
+        elfe: require('@assets/images/elfe.png'),
+        barbare: require('@assets/images/barbare.png'),
+        magicienne: require('@assets/images/magicienne.png'),
+        ogre: require('@assets/images/ogre.png'),
     };
 
     const MyImage = imageMap[path];

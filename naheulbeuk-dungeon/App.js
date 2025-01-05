@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react';
-
-import MyStack from "./src/other/ScreenHandling"
 import TrackPlayer, {Capability} from 'react-native-track-player';
 
-import podcasts from './assets/files/podcasts.json';
+import MyStack from "@other/ScreenHandling"
 
 const App = () => {
 

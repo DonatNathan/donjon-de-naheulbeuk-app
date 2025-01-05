@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../other/Colors";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { COLORS } from "@other/Colors";
 
 const BottomBar = ({navigation}) => {
     return (

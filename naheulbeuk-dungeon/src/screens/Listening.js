@@ -4,10 +4,11 @@ import TrackPlayer, {State, Event, useProgress, useTrackPlayerEvents} from 'reac
 import Slider from '@react-native-community/slider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import PageStyles from "../other/Styles";
-import Header from '../components.js/Header';
-import { COLORS } from '../other/Colors';
-import podcasts from '../../assets/files/podcasts.json';
+import PageStyles from "@other/Styles";
+import Header from '@components/Header';
+import { COLORS } from '@other/Colors';
+
+import podcasts from '@assets/files/podcasts.json';
 
 const {width, height} = Dimensions.get('window');
 

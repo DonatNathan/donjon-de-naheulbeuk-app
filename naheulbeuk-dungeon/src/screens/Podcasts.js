@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, TextInput, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import PageStyles from "../other/Styles";
-import Header from '../components.js/Header';
-import { COLORS } from '../other/Colors';
-import BottomBar from '../components.js/BottomNavigator';
-import MusicPlayer from './Listening';
+import PageStyles from "@other/Styles";
+import Header from '@components/Header';
+import { COLORS } from '@other/Colors';
+import BottomBar from '@components/BottomNavigator';
+import MusicPlayer from '@screens/Listening';
 
-import podcasts from '../../assets/files/podcasts.json';
+import podcasts from '@assets/files/podcasts.json';
 
 const {width, height} = Dimensions.get('window');
 
@@ -39,12 +39,12 @@ const Episode = ({episode}) => {
 	}
 
 	const imageMap = {
-        main: require('../../assets/images/main.png'),
-        nain: require('../../assets/images/nain.png'),
-        elfe: require('../../assets/images/elfe.png'),
-        barbare: require('../../assets/images/barbare.png'),
-        magicienne: require('../../assets/images/magicienne.png'),
-        ogre: require('../../assets/images/ogre.png'),
+        main: require('@assets/images/main.png'),
+        nain: require('@assets/images/nain.png'),
+        elfe: require('@assets/images/elfe.png'),
+        barbare: require('@assets/images/barbare.png'),
+        magicienne: require('@assets/images/magicienne.png'),
+        ogre: require('@assets/images/ogre.png'),
     };
 
     const MyImage = imageMap[parseArtwork(episode.artwork)];
