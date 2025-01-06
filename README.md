@@ -22,14 +22,14 @@ Then, scan the QR code and try the app !
 
 ## Images : 
 
-![Alt text](image.png)
-![Alt text](image-1.png)
-![Alt text](image-2.png)
+![Web - Main Page](readme/image.png)
+![Web - Library Page](readme/image-1.png)
+![Web - Listening Page](readme/image-2.png)
 
-![Alt text](image-3.png)
-![Alt text](image-4.png)
-![Alt text](image-5.png)
-![Alt text](image-6.png)
+![Mobile - Main Page](readme/image-3.png)
+![Mobile - Library Page](readme/image-4.png)
+![Mobile - Listening Page](readme/image-5.png)
+![Mobile - Heroes Page](readme/image-6.png)
 
 ## Other links : 
 
