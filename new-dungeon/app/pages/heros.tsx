@@ -3,7 +3,7 @@ import { Image, Linking, StyleSheet, Text, View } from "react-native";
 
 import BottomBar from "../components/BottomNavigator";
 import PageStyles from "../other/styles";
-import Header from "../components/Header";
+import Header from "../components/header";
 import { COLORS } from "../other/colors";
 
 type HeroProps = {
@@ -38,7 +38,7 @@ const Heroes = () => {
             <Header />
             <View style={PageStyles.content}>
                 <Text style={HeroesStyles.headerText}>Héros</Text>
-                <Image source={require("../../assets/images/penofchaos.png")} style={HeroesStyles.mainImage}  />
+                <Image source={require("../../assets/images/penofchaos.png")} style={HeroesStyles.mainImage} />
                 <Text style={HeroesStyles.username} onPress={() => Linking.openURL("http://www.penofchaos.com/warham/donjon.htm")}>Pen Of Chaos</Text>
                 <Text style={HeroesStyles.master}>Maître du Donjon</Text>
                 <View style={HeroesStyles.heroList}>
@@ -59,26 +59,26 @@ const HeroesStyles = StyleSheet.create({
     headerText: {
         textAlign: "center",
         fontWeight: "bold",
-        fontSize: 18,
+        fontSize: 30,
         color: COLORS.MainText
     },
     mainImage: {
-        height: 50,
-        width: 50,
+        height: 150,
+        width: 150,
         borderRadius: 100,
         alignSelf: "center",
-        marginTop: 10
+        marginTop: 30
     },
     username: {
         textAlign: "center",
         fontWeight: "bold",
-        fontSize: 16,
+        fontSize: 20,
         color: COLORS.MainText,
         marginTop: 10,
     },
     master: {
         color: COLORS.SecondText,
-        fontSize: 12,
+        fontSize: 14,
         textAlign: "center",
         fontStyle: "italic"
     },
@@ -89,8 +89,8 @@ const HeroesStyles = StyleSheet.create({
         color: COLORS.MainText
     },
     heroPicture: {
-        height: 30,
-        width: 30
+        height: 80,
+        width: 80
     },
     heroContainer: {
         display: "flex",
@@ -103,7 +103,7 @@ const HeroesStyles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        marginTop: 20,
+        marginTop: 50,
         justifyContent: "center"
     }
 });

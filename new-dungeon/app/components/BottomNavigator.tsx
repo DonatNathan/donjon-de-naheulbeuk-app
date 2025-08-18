@@ -36,8 +36,9 @@ const BottomStyles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         width: "100%",
-        padding: 10,
         color: COLORS.MainText,
+        alignItems: "center",
+        height: 60
     },
     icons: {
         display: "flex",

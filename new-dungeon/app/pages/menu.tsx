@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 
 import BottomBar from "../components/BottomNavigator";
 import PageStyles from "../other/styles";
-import Header from "../components/Header";
+import Header from "../components/header";
 import { COLORS } from "../other/colors";
 
 import Sentences from '../../assets/files/sentences.json';
@@ -83,8 +83,9 @@ const Home = () => {
 
 const HomeStyles = StyleSheet.create({
     logo: {
-        width: "100%",
-        marginTop: 20
+        width: "80%",
+        marginTop: 100,
+        alignSelf: "center"
     },
     randomSentence: {
         textAlign: "center",
@@ -93,10 +94,10 @@ const HomeStyles = StyleSheet.create({
         fontSize: 14,
     },
     randomImage: {
-        marginTop: 10,
+        marginTop: 50,
         marginBottom: 10,
-        width: 100,
-        height: 100,
+        width: 150,
+        height: 150,
         alignSelf: "center",
     },
     button: {
@@ -108,7 +109,7 @@ const HomeStyles = StyleSheet.create({
         width: "80%",
         padding: 15,
         borderRadius: 30,
-        marginTop: 30,
+        marginTop: 70,
         alignSelf: "center"
     },
     buttonText: {

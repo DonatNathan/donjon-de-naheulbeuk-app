@@ -8,7 +8,7 @@ const PageStyles = StyleSheet.create({
         backgroundColor: COLORS.MainBack,
     },
     header: {
-        marginTop: 30
+        marginTop: 50
     },
     content: {
         paddingHorizontal: 20

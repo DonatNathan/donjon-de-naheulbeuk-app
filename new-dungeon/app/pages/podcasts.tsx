@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Dimensions, TextInput, Image, ScrollView, FlatLi
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import PageStyles from "../other/styles";
-import Header from '../components/Header';
+import Header from '../components/header';
 import { COLORS } from '../other/colors';
 import BottomBar from '../components/BottomNavigator';
 import MusicPlayer from './listening';
@@ -53,7 +53,6 @@ const SearchBar: React.FC<SearchProps> = ({search, setSearch}) => {
                 textAlign={'left'}
 				style={LibraryStyles.input}
 			/>
-			<Ionicons name="search" size={30} color={COLORS.MainText} />
 		</View>
 	);
 };
@@ -88,7 +87,7 @@ const Library: React.FC<LibraryProps> = ({setPage, setTrack}) => {
 			<View style={PageStyles.content}>
 				<Text style={LibraryStyles.headerText}>Podcasts</Text>
 				<SearchBar search={search} setSearch={setSearch} />
-				<ScrollView contentContainerStyle={LibraryStyles.episodeList}>
+				<ScrollView contentContainerStyle={[LibraryStyles.episodeList, { paddingBottom: 250 }]}>
 					{podcasts.map((value, index) => {
 						{
 							if (value.title.includes(search) || value.artist.includes(search)) 
@@ -122,7 +121,7 @@ const LibraryStyles = StyleSheet.create({
 	headerText: {
 		textAlign: "center",
         fontWeight: "bold",
-        fontSize: 18,
+        fontSize: 30,
         color: COLORS.MainText
 	},
 	searchBar: {
@@ -133,13 +132,11 @@ const LibraryStyles = StyleSheet.create({
 		justifyContent: "space-between",
 		backgroundColor: COLORS.SecondBack,
 		borderRadius: 15,
-		marginTop: 10,
+		marginTop: 30,
 		alignSelf: "center",
 		paddingRight: 10,
 	},
 	input: {
-		height: "100%",
-		width: "100%",
 		borderRadius: 15,
 		paddingLeft: 10
 	},
@@ -148,11 +145,12 @@ const LibraryStyles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "row",
 		flexWrap: "wrap",
-		justifyContent: "center"
+		justifyContent: "center",
 	},
 	episode: {
 		width: 120,
-		margin: 20
+		marginTop: 10,
+		marginHorizontal: 20
 	}, 
 	episodeImage: {
 		height: 120,

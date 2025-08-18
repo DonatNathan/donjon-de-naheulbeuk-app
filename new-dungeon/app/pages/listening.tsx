@@ -4,7 +4,7 @@ import Slider from '@react-native-community/slider';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import PageStyles from "../other/styles";
-import Header from '../components/Header';
+import Header from '../components/header';
 import { COLORS } from '../other/colors';
 
 import podcasts from '../../assets/files/podcasts.json';
