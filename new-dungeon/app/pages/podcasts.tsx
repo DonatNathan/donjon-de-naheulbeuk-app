@@ -1,18 +1,46 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, TextInput, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-import PageStyles from "@other/Styles";
-import Header from '@components/Header';
-import { COLORS } from '@other/Colors';
-import BottomBar from '@components/BottomNavigator';
-import MusicPlayer from '@screens/Listening';
+import PageStyles from "../other/styles";
+import Header from '../components/Header';
+import { COLORS } from '../other/colors';
+import BottomBar from '../components/BottomNavigator';
+import MusicPlayer from './listening';
 
-import podcasts from '@assets/files/podcasts.json';
+import podcasts from '../../assets/files/podcasts.json';
 
-const {width, height} = Dimensions.get('window');
+type SearchProps = {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+};
 
-const SearchBar = ({search, setSearch}) => {
+type LibraryProps = {
+	setPage: React.Dispatch<React.SetStateAction<string>>;
+	setTrack: React.Dispatch<React.SetStateAction<number>>;
+}
+
+type EpisodeProps = {
+	episode: {
+		url: string;
+		title: string;
+		artist: string;
+		artwork: string;
+	}
+}
+
+const imageMap = {
+  main: require("../../assets/images/main.png"),
+  nain: require("../../assets/images/nain.png"),
+  elfe: require("../../assets/images/elfe.png"),
+  barbare: require("../../assets/images/barbare.png"),
+  magicienne: require("../../assets/images/magicienne.png"),
+  ogre: require("../../assets/images/ogre.png"),
+};
+
+type ImageKey = keyof typeof imageMap;
+
+const SearchBar: React.FC<SearchProps> = ({search, setSearch}) => {
 	return (
 		<View style={LibraryStyles.searchBar}>
 			<TextInput
@@ -30,24 +58,16 @@ const SearchBar = ({search, setSearch}) => {
 	);
 };
 
-const Episode = ({episode}) => {
+const Episode: React.FC<EpisodeProps> = ({episode}) => {
 
-	const parseArtwork = (artwork) => {
+	const parseArtwork = (artwork: string): ImageKey | null  => {
 		const name = artwork.split("/").slice(-1)[0];
-		const path = name.split(".")[0];
-		return path;
+		const key = name.split(".")[0];
+		return key in imageMap ? (key as ImageKey) : null;
 	}
 
-	const imageMap = {
-        main: require('@assets/images/main.png'),
-        nain: require('@assets/images/nain.png'),
-        elfe: require('@assets/images/elfe.png'),
-        barbare: require('@assets/images/barbare.png'),
-        magicienne: require('@assets/images/magicienne.png'),
-        ogre: require('@assets/images/ogre.png'),
-    };
-
-    const MyImage = imageMap[parseArtwork(episode.artwork)];
+    const imageKey = parseArtwork(episode.artwork);
+  	const MyImage = imageKey ? imageMap[imageKey] : require("../../assets/images/main.png");
 
 	return (
 		<View style={LibraryStyles.episode}>
@@ -58,7 +78,7 @@ const Episode = ({episode}) => {
 	);
 };
 
-const Library = ({navigation, setPage, setTrack}) => {
+const Library: React.FC<LibraryProps> = ({setPage, setTrack}) => {
 
 	const [search, setSearch] = useState("");
 
@@ -81,19 +101,19 @@ const Library = ({navigation, setPage, setTrack}) => {
 					})}
 				</ScrollView>
 			</View>
-			<BottomBar navigation={navigation} />
+			<BottomBar />
 		</View>
 	);
 };
 
-const Podcasts = ({navigation}) => {
+const Podcasts = () => {
 
     const [page, setPage] = useState("Library");
 	const [track, setTrack] = useState(0);
 
     return (
 		<>
-			{page == "Library" ? <Library navigation={navigation} setPage={setPage} setTrack={setTrack} /> : <MusicPlayer setPage={setPage} track={track} />}
+			{page == "Library" ? <Library setPage={setPage} setTrack={setTrack} /> : <MusicPlayer setPage={setPage} track={track} />}
 		</>
     );
 };
@@ -108,15 +128,14 @@ const LibraryStyles = StyleSheet.create({
 	searchBar: {
 		display: "flex",
 		flexDirection: "row",
-		width: width * 0.8,
+		width: "90%",
 		alignItems: "center",
 		justifyContent: "space-between",
 		backgroundColor: COLORS.SecondBack,
 		borderRadius: 15,
-		marginTop: height * 0.03,
+		marginTop: 10,
 		alignSelf: "center",
 		paddingRight: 10,
-		height: height * 0.05
 	},
 	input: {
 		height: "100%",
@@ -125,31 +144,30 @@ const LibraryStyles = StyleSheet.create({
 		paddingLeft: 10
 	},
 	episodeList: {
-		height: height * 0.7,
-		marginTop: height * 0.03,
+		marginTop: 10,
 		display: "flex",
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "center"
 	},
 	episode: {
-		width: height * 0.15,
-		margin: height * 0.02
+		width: 120,
+		margin: 20
 	}, 
 	episodeImage: {
-		height: height * 0.15,
-		width: height * 0.15
+		height: 120,
+		width: 120
 	},
 	episodeTitle: {
 		color: COLORS.MainText,
 		fontWeight: "bold",
 		fontSize: 12,
-		marginTop: height * 0.007
+		marginTop: 5
 	},
 	episodeArtist: {
 		color: COLORS.MainText,
 		fontSize: 10,
-		marginTop: height * 0.007
+		marginTop: 5
 	}
 });
 

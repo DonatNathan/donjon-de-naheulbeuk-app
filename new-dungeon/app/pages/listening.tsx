@@ -1,26 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import Slider from '@react-native-community/slider';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-import PageStyles from "@other/Styles";
-import Header from '@components/Header';
-import { COLORS } from '@other/Colors';
+import PageStyles from "../other/styles";
+import Header from '../components/Header';
+import { COLORS } from '../other/colors';
 
-import podcasts from '@assets/files/podcasts.json';
+import podcasts from '../../assets/files/podcasts.json';
 import { useAudioPlayer } from 'expo-audio';
 
 const audioSource = require(`../../assets/sounds/season1/saison1-episode11.mp3`);
 
 const {width, height} = Dimensions.get('window');
 
-const MusicPlayer = ({setPage, track}) => {
+type MusicPlayerProps = {
+	setPage: React.Dispatch<React.SetStateAction<string>>
+	track: number
+}
+
+const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 
 	const podcastsCount = podcasts.length;
 	const [trackIndex, setTrackIndex] = useState(0);
-	const [trackTitle, setTrackTitle] = useState();
-	const [trackArtist, setTrackArtist] = useState();
-	const [trackArtwork, setTrackArtwork] = useState();
+	const [trackTitle, setTrackTitle] = useState("");
+	const [trackArtist, setTrackArtist] = useState("");
+	const [trackArtwork, setTrackArtwork] = useState("");
 	const [isPause, setIsPause] = useState(false);
 	const [soundPosition, setSoundPosition] = useState(new Date(0));
 	const [soundDuration, setSoundDuration] = useState(new Date(0));
@@ -34,7 +39,7 @@ const MusicPlayer = ({setPage, track}) => {
       player.play();
 			setTrackTitle(podcasts[trackIndex].title);
 			setTrackArtist(podcasts[trackIndex].artist);
-			setTrackArtwork(`@assets/images/${podcasts[trackIndex].artwork}`);
+			setTrackArtwork(`../../assets/images/${podcasts[trackIndex].artwork}`);
 		} catch (error) {
 			console.log(error);
 		}
@@ -93,16 +98,18 @@ const MusicPlayer = ({setPage, track}) => {
 					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
 					<Ionicons name="arrow-forward" size={30} color={COLORS.MainBack} />
 				</View>
-				<Image source={require('@assets/images/main.png')} style={MusicPlayerStyles.imageWrapper} />
+				<Image source={require('../../assets/images/main.png')} style={MusicPlayerStyles.imageWrapper} />
 				<View style={MusicPlayerStyles.songInfos}>
 					<Text style={MusicPlayerStyles.songTitle}>{trackTitle}</Text>
 					<Text style={MusicPlayerStyles.songArtist}>{trackArtist}</Text>
 				</View>
 				<Slider
 					style={MusicPlayerStyles.slider}
-					value={progress.position}
+					// value={progress.position}
+					value={0}
 					minimumValue={0}
-					maximumValue={progress.duration || 1}
+					// maximumValue={progress.duration || 1}
+					maximumValue={1}
 					thumbTintColor={COLORS.MainText}
 					minimumTrackTintColor={COLORS.MainText}
 					maximumTrackTintColor={COLORS.SecondBack}

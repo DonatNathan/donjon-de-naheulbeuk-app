@@ -4,3 +4,5 @@ export const COLORS = {
     MainText: '#641A14',
     SecondText: '#900101',
 }
+
+export default COLORS;
