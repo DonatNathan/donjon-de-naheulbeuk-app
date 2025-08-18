@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
-import TrackPlayer, {State, Event, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
 import Slider from '@react-native-community/slider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -9,76 +8,64 @@ import Header from '@components/Header';
 import { COLORS } from '@other/Colors';
 
 import podcasts from '@assets/files/podcasts.json';
+import { useAudioPlayer } from 'expo-audio';
+
+const audioSource = require(`../../assets/sounds/season1/saison1-episode11.mp3`);
 
 const {width, height} = Dimensions.get('window');
 
 const MusicPlayer = ({setPage, track}) => {
 
 	const podcastsCount = podcasts.length;
-	const [trackIndex, setTrackIndex] = useState();
+	const [trackIndex, setTrackIndex] = useState(0);
 	const [trackTitle, setTrackTitle] = useState();
 	const [trackArtist, setTrackArtist] = useState();
 	const [trackArtwork, setTrackArtwork] = useState();
-	const [soundState, setSoundState] = useState(State.Playing);
+	const [isPause, setIsPause] = useState(false);
 	const [soundPosition, setSoundPosition] = useState(new Date(0));
 	const [soundDuration, setSoundDuration] = useState(new Date(0));
+
+  const player = useAudioPlayer(audioSource);
 	
-	const progress = useProgress();
+	const progress = 0; // TODO: Change with real progress
 
 	const launchPlayer = async () => {
 		try {
-            await TrackPlayer.add(podcasts);
-            await TrackPlayer.skip(track);
-			await gettrackdata();
-			await TrackPlayer.play();
+      player.play();
+			setTrackTitle(podcasts[trackIndex].title);
+			setTrackArtist(podcasts[trackIndex].artist);
+			setTrackArtwork(`@assets/images/${podcasts[trackIndex].artwork}`);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	// TODO : Fix the deprecation
-	useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
-		if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
-			const track = await TrackPlayer.getTrack(event.nextTrack);
-			setTrackIndex(event.nextTrack);
-			setTrackTitle(track.title);
-			setTrackArtist(track.artist);
-			setTrackArtwork(track.artwork);
-		}
-	});
-
 	const gettrackdata = async () => {
-		let trackIndex = await TrackPlayer.getActiveTrackIndex();
-		let trackObject = await TrackPlayer.getTrack(trackIndex);
-		setTrackIndex(trackIndex);
-		setTrackTitle(trackObject.title);
-		setTrackArtist(trackObject.artist);
-		setTrackArtwork(trackObject.artwork);
+		setTrackTitle(podcasts[trackIndex].title);
+		setTrackArtist(podcasts[trackIndex].artist);
+		setTrackArtwork(podcasts[trackIndex].artwork);
 	};
 
 	const togglePlayBack = async () => {
-		const currentTrack = await TrackPlayer.getActiveTrackIndex();
-		if (currentTrack != null) {
-			if ((soundState == State.Paused)) {
-				await TrackPlayer.play();
-				setSoundState(State.Playing);
-			} else {
-				await TrackPlayer.pause();
-				setSoundState(State.Paused);
-			}
-		}
+    if ((isPause)) {
+      player.play();
+      setIsPause(false);
+    } else {
+      player.pause();
+      setIsPause(true);
+    }
 	};
 
 	const nexttrack = async () => {
 		if (trackIndex < podcastsCount-1) {
-			await TrackPlayer.skipToNext();
+      setTrackIndex(trackIndex + 1);
 			gettrackdata();
 		};
 	};
 
 	const previoustrack = async () => {
 		if (trackIndex > 0) {
-			await TrackPlayer.skipToPrevious();
+      setTrackIndex(trackIndex - 1);
 			gettrackdata();
 		};
 	};
@@ -87,26 +74,26 @@ const MusicPlayer = ({setPage, track}) => {
 		launchPlayer();
 	}, []);
 
-	useEffect(() => {
-		setSoundPosition(new Date(progress.position * 1000));
-	}, [progress.position])
+	// useEffect(() => {
+	// 	setSoundPosition(new Date(progress.position * 1000));
+	// }, [progress.position])
 
-	useEffect(() => {
-		setSoundDuration(new Date(progress.duration * 1000));
-	}, [progress.duration])
+	// useEffect(() => {
+	// 	setSoundDuration(new Date(progress.duration * 1000));
+	// }, [progress.duration])
 
 	return (
 		<View style={PageStyles.page}>
 			<Header />
 			<View style={PageStyles.content}>
 				<View style={MusicPlayerStyles.header}>
-					<TouchableOpacity onPress={async () => {await TrackPlayer.reset(); setPage("Library")}}>
+          <TouchableOpacity onPress={() => {setPage("Library")}}>
 						<Ionicons name="arrow-back" size={30} style={MusicPlayerStyles.arrowBack} />
 					</TouchableOpacity>
 					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
 					<Ionicons name="arrow-forward" size={30} color={COLORS.MainBack} />
 				</View>
-				<Image source={trackArtwork} style={MusicPlayerStyles.imageWrapper} />
+				<Image source={require('@assets/images/main.png')} style={MusicPlayerStyles.imageWrapper} />
 				<View style={MusicPlayerStyles.songInfos}>
 					<Text style={MusicPlayerStyles.songTitle}>{trackTitle}</Text>
 					<Text style={MusicPlayerStyles.songArtist}>{trackArtist}</Text>
@@ -119,7 +106,7 @@ const MusicPlayer = ({setPage, track}) => {
 					thumbTintColor={COLORS.MainText}
 					minimumTrackTintColor={COLORS.MainText}
 					maximumTrackTintColor={COLORS.SecondBack}
-					onSlidingComplete={async value => await TrackPlayer.seekTo(value) }
+					// onSlidingComplete={async value => await TrackPlayer.seekTo(value) }
 				/>
 				<View style={MusicPlayerStyles.progressLevelDuration}>
 					<Text>{soundPosition.getMinutes()}:{soundPosition.getSeconds() < 10 ? `0${soundPosition.getSeconds()}` : soundPosition.getSeconds()}</Text>
@@ -130,7 +117,7 @@ const MusicPlayer = ({setPage, track}) => {
 						<Ionicons name="play-skip-back" size={30} style={MusicPlayerStyles.controlButtons} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => togglePlayBack() }>
-						<Ionicons name={soundState === State.Playing ? 'pause-circle' : 'play-circle'} size={75} style={MusicPlayerStyles.controlButtons} />
+						<Ionicons name={!isPause ? 'pause-circle' : 'play-circle'} size={75} style={MusicPlayerStyles.controlButtons} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={nexttrack}>
 						<Ionicons name="play-skip-forward" size={30} style={MusicPlayerStyles.controlButtons} />

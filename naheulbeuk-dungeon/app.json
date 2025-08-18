@@ -29,6 +29,11 @@
       "eas": {
         "projectId": "bbaefc31-c01d-44a2-8209-39a19a1bb95e"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-audio"
+      ]
+    ]
   }
 }
