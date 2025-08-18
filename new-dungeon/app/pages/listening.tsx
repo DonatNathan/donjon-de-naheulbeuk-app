@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Slider from '@react-native-community/slider';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -9,8 +9,6 @@ import { COLORS } from '../other/colors';
 
 import podcasts from '../../assets/files/podcasts.json';
 import { useAudioPlayer } from 'expo-audio';
-
-const {width, height} = Dimensions.get('window');
 
 type MusicPlayerProps = {
 	setPage: React.Dispatch<React.SetStateAction<string>>
@@ -212,7 +210,7 @@ const MusicPlayerStyles = StyleSheet.create({
 		fontSize: 16
 	},
 	songInfos:{
-		width: height * 0.3,
+		width: 250,
 		alignSelf: "center",
 		textAlign: "left"
 	},
@@ -221,20 +219,20 @@ const MusicPlayerStyles = StyleSheet.create({
 	},
 	imageWrapper: {
 		alignSelf: "center",
-		width: height * 0.3,
-        height: height * 0.3,
-		marginTop: height * 0.1
+		width: 250,
+        height: 250,
+		marginTop: 80
 	},
 	songTitle: {
 		fontSize: 20,
 		fontWeight: "bold",
 		color: COLORS.MainText,
-		marginTop: height * 0.02
+		marginTop: 10
 	},
 	songArtist: {
 		fontSize: 14,
 		color: COLORS.MainText,
-		marginTop: height * 0.01
+		marginTop: 10
 	},
 	controlButtons: {
 		color: COLORS.MainText
@@ -244,17 +242,17 @@ const MusicPlayerStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',
-		marginTop: height * 0.05
+		marginTop: 50
 	},
 	progressLevelDuration: {
 		width: "100%",
 		display: "flex",
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		marginTop: height * 0.01
+		marginTop: 10
 	},
 	slider: {
-		marginTop: height * 0.1
+		marginTop: 80
 	}
 });
 
