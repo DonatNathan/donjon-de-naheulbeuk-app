@@ -1,18 +1,14 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Dimensions } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from "expo-router";
 
-import BottomBar from "@components/BottomNavigator";
-import PageStyles from "@other/Styles";
-import Header from "@components/Header";
-import { COLORS } from "@other/Colors";
+import BottomBar from "../components/BottomNavigator";
+import PageStyles from "../other/styles";
+import Header from "../components/header";
+import { COLORS } from "../other/colors";
 
-const Logo = require('@assets/images/logo.png');
-const Sentences = require('@assets/files/sentences.json');
-
-const { width, height } = Dimensions.get("window");
-
+import Sentences from '../../assets/files/sentences.json';
 
 const RandomImage = () => {
 
@@ -21,25 +17,25 @@ const RandomImage = () => {
 
     switch (randomIndex) {
         case 0:
-            RandomImage = require('@assets/images/main.png');
+            RandomImage = require('../../assets/images/main.png');
             break;
         case 1:
-            RandomImage = require('@assets/images/nain.png');
+            RandomImage = require('../../assets/images/nain.png');
             break;
         case 2:
-            RandomImage = require('@assets/images/elfe.png');
+            RandomImage = require('../../assets/images/elfe.png');
             break;
         case 3:
-            RandomImage = require('@assets/images/barbare.png');
+            RandomImage = require('../../assets/images/barbare.png');
             break;
         case 4:
-            RandomImage = require('@assets/images/magicienne.png');
+            RandomImage = require('../../assets/images/magicienne.png');
             break;
         case 5:
-            RandomImage = require('@assets/images/ogre.png');
+            RandomImage = require('../../assets/images/ogre.png');
             break;
         default:
-            RandomImage = require('@assets/images/penofchaos.png');
+            RandomImage = require('../../assets/images/penofchaos.png');
     }
 
     return (
@@ -56,9 +52,12 @@ const RandomText = () => {
     );
 };
 
-const EnterButton = ({navigation}) => {
+const EnterButton = () => {
+
+    const router = useRouter();
+
     return (
-        <TouchableOpacity onPress={() => navigation.navigate("Podcasts")}>
+        <TouchableOpacity onPress={() => router.navigate("/pages/podcasts")}>
             <View style={HomeStyles.button}>
                 <Text style={HomeStyles.buttonText}>Entrer dans le Donjon</Text>
                 <Ionicons name="arrow-forward" size={30} color={COLORS.MainText} />
@@ -67,25 +66,26 @@ const EnterButton = ({navigation}) => {
     );
 };
 
-const Home = ({navigation}) => {
+const Home = () => {
     return (
         <View style={PageStyles.page}>
             <Header />
             <View style={PageStyles.content}>
-                <Image source={Logo} style={HomeStyles.logo} resizeMode="contain" />
+                <Image source={require('../../assets/images/logo.png')} style={HomeStyles.logo} resizeMode="contain" />
                 <RandomImage />
                 <RandomText />
-                <EnterButton navigation={navigation} />
+                <EnterButton />
             </View>
-            <BottomBar navigation={navigation} />
+            <BottomBar />
         </View>
     );
 };
 
 const HomeStyles = StyleSheet.create({
     logo: {
-        width: "100%",
-        marginTop: height * 0.1
+        width: "80%",
+        marginTop: 100,
+        alignSelf: "center"
     },
     randomSentence: {
         textAlign: "center",
@@ -94,10 +94,10 @@ const HomeStyles = StyleSheet.create({
         fontSize: 14,
     },
     randomImage: {
-        marginTop: height * 0.1,
-        marginBottom: height * 0.02,
-        width: height * 0.2,
-        height: height * 0.2,
+        marginTop: 50,
+        marginBottom: 10,
+        width: 150,
+        height: 150,
         alignSelf: "center",
     },
     button: {
@@ -106,10 +106,10 @@ const HomeStyles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-evenly",
-        width: height * 0.4,
+        width: "80%",
         padding: 15,
         borderRadius: 30,
-        marginTop: height * 0.1,
+        marginTop: 70,
         alignSelf: "center"
     },
     buttonText: {
