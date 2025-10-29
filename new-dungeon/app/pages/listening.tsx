@@ -37,8 +37,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 	const [soundPosition, setSoundPosition] = useState(0);
 	const [soundDuration, setSoundDuration] = useState(0);
 
-	const audioSource = require(`../../assets/sounds/saison1-episode1.mp3`);
-  	const player = useAudioPlayer(audioSource);
+  	const player = useAudioPlayer(`${process.env.EXPO_PUBLIC_SUPABASE_URL}saison1-episode1.mp3`);
 
 	const launchPlayer = () => {
 		try {
