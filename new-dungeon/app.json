@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/main.png",
         "backgroundColor": "#E8E4D4"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "naheulbkeuk.dungeon"
     },
     "web": {
       "bundler": "metro",
@@ -33,10 +34,17 @@
           "resizeMode": "contain",
           "backgroundColor": "#E8E4D4"
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "841dcf04-f689-4451-9550-cc69c3ecb848"
+      }
     }
   }
 }
