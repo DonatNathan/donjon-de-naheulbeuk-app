@@ -24,59 +24,7 @@ const imageMap = {
   ogre: require("../../assets/images/ogre.png"),
 };
 
-const audioMap = {
-  "saison1-episode1.mp3": require('../../assets/sounds/saison1-episode1.mp3'),
-  "saison1-episode2.mp3": require('../../assets/sounds/saison1-episode2.mp3'),
-  "saison1-episode3.mp3": require('../../assets/sounds/saison1-episode3.mp3'),
-  "saison1-episode4.mp3": require('../../assets/sounds/saison1-episode4.mp3'),
-  "saison1-episode5.mp3": require('../../assets/sounds/saison1-episode5.mp3'),
-  "saison1-episode6.mp3": require('../../assets/sounds/saison1-episode6.mp3'),
-  "saison1-episode7.mp3": require('../../assets/sounds/saison1-episode7.mp3'),
-  "saison1-episode8.mp3": require('../../assets/sounds/saison1-episode8.mp3'),
-  "saison1-episode9.mp3": require('../../assets/sounds/saison1-episode9.mp3'),
-  "saison1-episode10.mp3": require('../../assets/sounds/saison1-episode10.mp3'),
-  "saison1-episode11.mp3": require('../../assets/sounds/saison1-episode11.mp3'),
-  "saison1-episode12.mp3": require('../../assets/sounds/saison1-episode12.mp3'),
-  "saison1-episode13.mp3": require('../../assets/sounds/saison1-episode13.mp3'),
-  "saison1-episode14.mp3": require('../../assets/sounds/saison1-episode14.mp3'),
-  "saison1-episode15.mp3": require('../../assets/sounds/saison1-episode15.mp3'),
-  "saison2-episode16.mp3": require('../../assets/sounds/saison2-episode16.mp3'),
-  "saison2-episode17.mp3": require('../../assets/sounds/saison2-episode17.mp3'),
-  "saison2-episode18.mp3": require('../../assets/sounds/saison2-episode18.mp3'),
-  "saison2-episode19.mp3": require('../../assets/sounds/saison2-episode19.mp3'),
-  "saison2-episode20.mp3": require('../../assets/sounds/saison2-episode20.mp3'),
-  "saison2-episode21-1.mp3": require('../../assets/sounds/saison2-episode21-1.mp3'),
-  "saison2-episode21-2.mp3": require('../../assets/sounds/saison2-episode21-2.mp3'),
-  "saison2-episode22.mp3": require('../../assets/sounds/saison2-episode22.mp3'),
-  "saison2-episode23.mp3": require('../../assets/sounds/saison2-episode23.mp3'),
-  "saison2-episode24.mp3": require('../../assets/sounds/saison2-episode24.mp3'),
-  "saison2-episode25.mp3": require('../../assets/sounds/saison2-episode25.mp3'),
-  "saison2-episode26-1.mp3": require('../../assets/sounds/saison2-episode26-1.mp3'),
-  "saison2-episode26-2.mp3": require('../../assets/sounds/saison2-episode26-2.mp3'),
-  "saison2-episode27-1.mp3": require('../../assets/sounds/saison2-episode27-1.mp3'),
-  "saison2-episode27-2.mp3": require('../../assets/sounds/saison2-episode27-2.mp3'),
-  "saison2-episode28.mp3": require('../../assets/sounds/saison2-episode28.mp3'),
-  "saison2-episode29.mp3": require('../../assets/sounds/saison2-episode29.mp3'),
-  "saison2-episode30-1.mp3": require('../../assets/sounds/saison2-episode30-1.mp3'),
-  "saison2-episode30-2.mp3": require('../../assets/sounds/saison2-episode30-2.mp3'),
-  "saison3-episode31.mp3": require('../../assets/sounds/saison3-episode31.mp3'),
-  "saison3-episode32.mp3": require('../../assets/sounds/saison3-episode32.mp3'),
-  "saison3-episode33.mp3": require('../../assets/sounds/saison3-episode33.mp3'),
-  "saison3-episode34.mp3": require('../../assets/sounds/saison3-episode34.mp3'),
-  "saison3-episode35.mp3": require('../../assets/sounds/saison3-episode35.mp3'),
-  "saison3-episode36.mp3": require('../../assets/sounds/saison3-episode36.mp3'),
-  "saison3-episode37.mp3": require('../../assets/sounds/saison3-episode37.mp3'),
-  "saison3-episode38.mp3": require('../../assets/sounds/saison3-episode38.mp3'),
-  "saison3-episode39.mp3": require('../../assets/sounds/saison3-episode39.mp3'),
-  "saison3-episode40.mp3": require('../../assets/sounds/saison3-episode40.mp3'),
-  "saison3-episode41.mp3": require('../../assets/sounds/saison3-episode41.mp3'),
-  "saison3-episode42.mp3": require('../../assets/sounds/saison3-episode42.mp3'),
-  "saison3-episode43.mp3": require('../../assets/sounds/saison3-episode43.mp3'),
-  "saison3-episode44.mp3": require('../../assets/sounds/saison3-episode44.mp3'),
-};
-
 type ImageKey = keyof typeof imageMap;
-type AudioKey = keyof typeof audioMap;
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 
@@ -108,8 +56,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
     	setTrackArtwork(imageMap[artworkName] || imageMap.main);
 
 		player.pause();
-		const fileName = episode.url.split('/').slice(-1)[0] as AudioKey;
-		player.replace(audioMap[fileName]);
+		player.replace(`${process.env.EXPO_PUBLIC_SUPABASE_URL}${episode.url}`);
 		player.play();
 
 		setSoundPosition(player.currentTime);

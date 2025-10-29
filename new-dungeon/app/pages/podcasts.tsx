@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, TextInput, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 import PageStyles from "../other/styles";
 import Header from '../components/header';
