@@ -88,10 +88,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 		const interval = setInterval(() => {
 			setSoundPosition(player.currentTime);
 			setSoundDuration(player.duration ?? 0);
+
+			if (player.duration && player.currentTime >= player.duration - 0.2) {
+				nexttrack();
+			}
 		}, 500);
 
 		return () => clearInterval(interval);
-	}, [player]);
+	}, [player, trackIndex]);
 	
 	useEffect(() => {
 		launchPlayer();
