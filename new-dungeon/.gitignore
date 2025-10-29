@@ -38,5 +38,5 @@ yarn-error.*
 
 app-example
 .vscode
-package-lock.json
+# package-lock.json
 .env
