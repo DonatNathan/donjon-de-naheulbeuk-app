@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, TextInput, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Image, ScrollView, TouchableOpacity} from 'react-native';
 
-import PageStyles from "../other/styles";
-import Header from '../components/header';
-import { COLORS } from '../other/colors';
-import BottomBar from '../components/BottomNavigator';
+import BottomBar from '../../components/bottom_bar';
+
+import { COLORS } from '../../other/colors';
+
 import MusicPlayer from './listening';
 
 import podcasts from '../../assets/files/podcasts.json';
@@ -81,9 +81,8 @@ const Library: React.FC<LibraryProps> = ({setPage, setTrack}) => {
 	const [search, setSearch] = useState("");
 
     return (
-		<View style={PageStyles.page}>
-			<Header />
-			<View style={PageStyles.content}>
+		<View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
+			<View style={{ paddingHorizontal: 20 }}>
 				<Text style={LibraryStyles.headerText}>Podcasts</Text>
 				<SearchBar search={search} setSearch={setSearch} />
 				<ScrollView contentContainerStyle={[LibraryStyles.episodeList, { paddingBottom: 250 }]}>

@@ -1,12 +1,11 @@
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
+import React, { useEffect } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from "expo-router";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { Link } from "expo-router";
 
-import BottomBar from "../components/BottomNavigator";
-import PageStyles from "../other/styles";
-import Header from "../components/header";
-import { COLORS } from "../other/colors";
+import BottomBar from "@/components/bottom_bar";
+
+import { COLORS } from "../../other/colors";
 
 import Sentences from '../../assets/files/sentences.json';
 
@@ -54,23 +53,21 @@ const RandomText = () => {
 
 const EnterButton = () => {
 
-    const router = useRouter();
-
     return (
-        <TouchableOpacity onPress={() => router.navigate("/pages/podcasts")}>
-            <View style={HomeStyles.button}>
-                <Text style={HomeStyles.buttonText}>Entrer dans le Donjon</Text>
-                <Ionicons name="arrow-forward" size={30} color={COLORS.MainText} />
-            </View>
-        </TouchableOpacity>
+        <Link href="/podcasts" style={HomeStyles.button}>
+          <View style={HomeStyles.buttonView}>
+              <Text>Entrer dans le Donjon</Text>
+              <Ionicons name="arrow-forward" size={30} color={COLORS.MainText} />
+          </View>
+        </Link>
     );
 };
 
-const Home = () => {
+export default function Home() {
+
     return (
-        <View style={PageStyles.page}>
-            <Header />
-            <View style={PageStyles.content}>
+        <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
+            <View style={{ paddingHorizontal: 20 }}>
                 <Image source={require('../../assets/images/logo.png')} style={HomeStyles.logo} resizeMode="contain" />
                 <RandomImage />
                 <RandomText />
@@ -102,20 +99,21 @@ const HomeStyles = StyleSheet.create({
     },
     button: {
         backgroundColor: COLORS.SecondBack,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-evenly",
         width: "80%",
+        alignSelf: "center",
         padding: 15,
         borderRadius: 30,
         marginTop: 70,
-        alignSelf: "center"
+    },
+    buttonView: {
+      display: "flex",
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-evenly",
     },
     buttonText: {
         fontSize: 15,
         fontWeight: "bold"
     }
 });
-
-export default Home;

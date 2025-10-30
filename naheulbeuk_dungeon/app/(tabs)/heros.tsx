@@ -1,10 +1,9 @@
 import React from "react";
 import { Image, Linking, StyleSheet, Text, View } from "react-native";
 
-import BottomBar from "../components/BottomNavigator";
-import PageStyles from "../other/styles";
-import Header from "../components/header";
-import { COLORS } from "../other/colors";
+import BottomBar from "@/components/bottom_bar";
+
+import { COLORS } from "../../other/colors";
 
 type HeroProps = {
   path: keyof typeof ImageMap;
@@ -34,9 +33,8 @@ const Hero: React.FC<HeroProps> = ({path, name}) => {
 
 const Heroes = () => {
     return (
-        <View style={PageStyles.page}>
-            <Header />
-            <View style={PageStyles.content}>
+        <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
+            <View style={{ paddingHorizontal: 20 }}>
                 <Text style={HeroesStyles.headerText}>Héros</Text>
                 <Image source={require("../../assets/images/penofchaos.png")} style={HeroesStyles.mainImage} />
                 <Text style={HeroesStyles.username} onPress={() => Linking.openURL("http://www.penofchaos.com/warham/donjon.htm")}>Pen Of Chaos</Text>

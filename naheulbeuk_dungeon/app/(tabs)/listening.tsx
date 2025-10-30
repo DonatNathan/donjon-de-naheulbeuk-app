@@ -3,9 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Slider from '@react-native-community/slider';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import PageStyles from "../other/styles";
-import Header from '../components/header';
-import { COLORS } from '../other/colors';
+import { COLORS } from '../../other/colors';
 
 import podcasts from '../../assets/files/podcasts.json';
 import { useAudioPlayer } from 'expo-audio';
@@ -102,11 +100,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 	}, []);
 
 	return (
-		<View style={PageStyles.page}>
-			<Header />
-			<View style={PageStyles.content}>
+		<View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
+			<View style={{ paddingHorizontal: 20 }}>
 				<View style={MusicPlayerStyles.header}>
-          <TouchableOpacity onPress={() => {setPage("Library")}}>
+                    <TouchableOpacity onPress={() => {setPage("Library")}}>
 						<Ionicons name="arrow-back" size={30} style={MusicPlayerStyles.arrowBack} />
 					</TouchableOpacity>
 					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>

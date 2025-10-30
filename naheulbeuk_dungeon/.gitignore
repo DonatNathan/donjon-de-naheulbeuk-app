@@ -37,6 +37,7 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
-.vscode
-# package-lock.json
-.env
+
+# generated native folders
+/ios
+/android
