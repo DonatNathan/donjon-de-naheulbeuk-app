@@ -36,12 +36,10 @@ const EnterButton = () => {
 export default function Home() {
 
     return (
-        <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
-            <View style={{ paddingHorizontal: 20 }}>
-                <Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/logo.png` }} style={HomeStyles.logo} resizeMode="contain" />
-                <RandomContent />
-                <EnterButton />
-            </View>
+        <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingBottom: "20%", height: "100%", display: "flex", justifyContent: "space-around" }}>
+            <Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/logo.png` }} style={HomeStyles.logo} resizeMode="contain" />
+            <RandomContent />
+            <EnterButton />
             <BottomBar />
         </View>
     );
@@ -50,7 +48,7 @@ export default function Home() {
 const HomeStyles = StyleSheet.create({
     logo: {
         width: "80%",
-        marginTop: 100,
+        height: "20%",
         alignSelf: "center"
     },
     randomSentence: {
@@ -60,8 +58,7 @@ const HomeStyles = StyleSheet.create({
         fontSize: 14,
     },
     randomImage: {
-        marginTop: 50,
-        marginBottom: 10,
+        marginTop: "5%",
         width: 150,
         height: 150,
         alignSelf: "center",
@@ -72,7 +69,6 @@ const HomeStyles = StyleSheet.create({
         alignSelf: "center",
         padding: 15,
         borderRadius: 30,
-        marginTop: 70,
     },
     buttonView: {
       display: "flex",

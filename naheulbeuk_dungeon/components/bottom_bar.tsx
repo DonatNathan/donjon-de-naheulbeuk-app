@@ -21,7 +21,7 @@ const BottomBar = () => {
             <View style={[BottomStyles.bar, { marginBottom: insets.bottom }]}>
                 <TouchableOpacity onPress={() => router.push("/")} style={BottomStyles.icons}>
                     <Ionicons name="home" size={30} color={COLORS.MainText} />
-                    <Text>Acceuil</Text>
+                    <Text>Accueil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => router.push("/(tabs)/podcasts")} style={BottomStyles.icons}>
                     <Ionicons name="folder" size={30} color={COLORS.MainText} />
@@ -41,7 +41,7 @@ const BottomStyles = StyleSheet.create({
         backgroundColor: COLORS.SecondBack,
         position: "absolute",
         bottom: 0,
-        width: "100%"
+        width: "100%",
     },
     bar: {
         display: "flex",

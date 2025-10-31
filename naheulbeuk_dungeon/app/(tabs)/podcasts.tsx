@@ -62,22 +62,20 @@ const Library: React.FC<LibraryProps> = ({setPage, setTrack}) => {
 
     return (
 		<View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
-			<View style={{ paddingHorizontal: 20 }}>
-				<Text style={LibraryStyles.headerText}>Podcasts</Text>
-				<SearchBar search={search} setSearch={setSearch} />
-				<ScrollView contentContainerStyle={[LibraryStyles.episodeList, { paddingBottom: 250 }]}>
-					{podcasts.map((value, index) => {
-						{
-							if (value.title.includes(search) || value.artist.includes(search)) 
-								return (
-									<TouchableOpacity key={index} onPress={() => {setTrack(index); setPage("Listening")}}>
-										<Episode episode={value}/>
-									</TouchableOpacity>	
-								);
-						}
-					})}
-				</ScrollView>
-			</View>
+			<Text style={LibraryStyles.headerText}>Podcasts</Text>
+			<SearchBar search={search} setSearch={setSearch} />
+			<ScrollView contentContainerStyle={[LibraryStyles.episodeList, { paddingBottom: 100 }]}>
+				{podcasts.map((value, index) => {
+					{
+						if (value.title.includes(search) || value.artist.includes(search)) 
+							return (
+								<TouchableOpacity key={index} onPress={() => {setTrack(index); setPage("Listening")}} style={{marginVertical: 10}}>
+									<Episode episode={value}/>
+								</TouchableOpacity>	
+							);
+					}
+				})}
+			</ScrollView>
 			<BottomBar />
 		</View>
 	);

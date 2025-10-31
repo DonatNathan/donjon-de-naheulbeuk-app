@@ -88,22 +88,23 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 	}, []);
 
 	return (
-		<View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
-			<View style={{ paddingHorizontal: 20 }}>
-				<View style={MusicPlayerStyles.header}>
-                    <TouchableOpacity onPress={() => {setPage("Library")}}>
-						<Ionicons name="arrow-back" size={30} style={MusicPlayerStyles.arrowBack} />
-					</TouchableOpacity>
-					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
-					<Ionicons name="arrow-forward" size={30} color={COLORS.MainBack} />
-				</View>
-				<Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${trackArtwork}` }} style={MusicPlayerStyles.imageWrapper} />
+		<View style={{ flex: 1, backgroundColor: COLORS.MainBack, height: "100%", display: "flex", justifyContent: "space-around" }}>
+			<View style={MusicPlayerStyles.header}>
+				<TouchableOpacity onPress={() => {setPage("Library")}}>
+					<Ionicons name="arrow-back" size={30} style={MusicPlayerStyles.arrowBack} />
+				</TouchableOpacity>
+				<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
+				<Ionicons name="arrow-forward" size={30} color={COLORS.MainBack} />
+			</View>
+			<View>
+				<Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${trackArtwork}` }} style={MusicPlayerStyles.imageWrapper} resizeMode="contain" />
 				<View style={MusicPlayerStyles.songInfos}>
 					<Text style={MusicPlayerStyles.songTitle}>{trackTitle}</Text>
 					<Text style={MusicPlayerStyles.songArtist}>{trackArtist}</Text>
 				</View>
+			</View>
+			<View style={{width: "80%", alignSelf: "center"}}>
 				<Slider
-					style={MusicPlayerStyles.slider}
 					value={soundPosition}
 					minimumValue={0}
 					maximumValue={soundDuration || 1}
@@ -116,17 +117,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 					<Text>{`${Math.floor(soundPosition / 60)}:${('0' + Math.round(soundPosition % 60)).slice(-2)}`}</Text>
 					<Text>{`${Math.floor(soundDuration / 60)}:${('0' + Math.round(soundDuration % 60)).slice(-2)}`}</Text>
 				</View>
-				<View style={MusicPlayerStyles.buttons}>
-					<TouchableOpacity onPress={previoustrack}>
-						<Ionicons name="play-skip-back" size={30} style={MusicPlayerStyles.controlButtons} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => togglePlayBack() }>
-						<Ionicons name={!isPause ? 'pause-circle' : 'play-circle'} size={75} style={MusicPlayerStyles.controlButtons} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={nexttrack}>
-						<Ionicons name="play-skip-forward" size={30} style={MusicPlayerStyles.controlButtons} />
-					</TouchableOpacity>
-				</View>
+			</View>
+			<View style={MusicPlayerStyles.buttons}>
+				<TouchableOpacity onPress={previoustrack}>
+					<Ionicons name="play-skip-back" size={30} style={MusicPlayerStyles.controlButtons} />
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => togglePlayBack() }>
+					<Ionicons name={!isPause ? 'pause-circle' : 'play-circle'} size={75} style={MusicPlayerStyles.controlButtons} />
+				</TouchableOpacity>
+				<TouchableOpacity onPress={nexttrack}>
+					<Ionicons name="play-skip-forward" size={30} style={MusicPlayerStyles.controlButtons} />
+				</TouchableOpacity>
 			</View>
 		</View>
   );
@@ -147,27 +148,25 @@ const MusicPlayerStyles = StyleSheet.create({
 	songInfos:{
 		width: 250,
 		alignSelf: "center",
-		textAlign: "left"
+		textAlign: "left",
+		marginTop: "5%"
 	},
 	arrowBack: {
 		color: COLORS.MainText
 	},
 	imageWrapper: {
 		alignSelf: "center",
-		width: 250,
+		width: "70%",
         height: 250,
-		marginTop: 80
 	},
 	songTitle: {
 		fontSize: 20,
 		fontWeight: "bold",
 		color: COLORS.MainText,
-		marginTop: 10
 	},
 	songArtist: {
 		fontSize: 14,
 		color: COLORS.MainText,
-		marginTop: 10
 	},
 	controlButtons: {
 		color: COLORS.MainText
@@ -177,17 +176,13 @@ const MusicPlayerStyles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',
-		marginTop: 50
 	},
 	progressLevelDuration: {
 		width: "100%",
 		display: "flex",
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		marginTop: 10
-	},
-	slider: {
-		marginTop: 80
+		marginTop: "5%"
 	}
 });
 
