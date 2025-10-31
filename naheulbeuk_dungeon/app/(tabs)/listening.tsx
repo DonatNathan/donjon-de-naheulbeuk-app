@@ -13,29 +13,18 @@ type MusicPlayerProps = {
 	track: number
 }
 
-const imageMap = {
-  main: require("../../assets/images/main.png"),
-  nain: require("../../assets/images/nain.png"),
-  elfe: require("../../assets/images/elfe.png"),
-  barbare: require("../../assets/images/barbare.png"),
-  magicienne: require("../../assets/images/magicienne.png"),
-  ogre: require("../../assets/images/ogre.png"),
-};
-
-type ImageKey = keyof typeof imageMap;
-
 const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 
 	const podcastsCount = podcasts.length;
 	const [trackIndex, setTrackIndex] = useState(track);
 	const [trackTitle, setTrackTitle] = useState("");
 	const [trackArtist, setTrackArtist] = useState("");
-	const [trackArtwork, setTrackArtwork] = useState<any>(imageMap.main);
+	const [trackArtwork, setTrackArtwork] = useState<any>("main.png");
 	const [isPause, setIsPause] = useState(false);
 	const [soundPosition, setSoundPosition] = useState(0);
 	const [soundDuration, setSoundDuration] = useState(0);
 
-  	const player = useAudioPlayer(`${process.env.EXPO_PUBLIC_SUPABASE_URL}saison1-episode1.mp3`);
+  	const player = useAudioPlayer(`${process.env.EXPO_PUBLIC_SUPABASE_URL}episodes/saison1-episode1.mp3`);
 
 	const launchPlayer = () => {
 		try {
@@ -49,11 +38,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 		const episode = podcasts[trackIndex];
 		setTrackTitle(episode.title);
 		setTrackArtist(episode.artist);
-		const artworkName = episode.artwork.split("/").slice(-1)[0].split(".")[0] as ImageKey;
-    	setTrackArtwork(imageMap[artworkName] || imageMap.main);
+    	setTrackArtwork(episode.artwork);
 
 		player.pause();
-		player.replace(`${process.env.EXPO_PUBLIC_SUPABASE_URL}${episode.url}`);
+		player.replace(`${process.env.EXPO_PUBLIC_SUPABASE_URL}episodes/${episode.url}`);
 		player.play();
 
 		setSoundPosition(player.currentTime);
@@ -109,7 +97,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({setPage, track}) => {
 					<Text style={MusicPlayerStyles.inProgress}>En cours</Text>
 					<Ionicons name="arrow-forward" size={30} color={COLORS.MainBack} />
 				</View>
-				<Image source={trackArtwork ? trackArtwork : require("../../assets/images/main.png")} style={MusicPlayerStyles.imageWrapper} />
+				<Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${trackArtwork}` }} style={MusicPlayerStyles.imageWrapper} />
 				<View style={MusicPlayerStyles.songInfos}>
 					<Text style={MusicPlayerStyles.songTitle}>{trackTitle}</Text>
 					<Text style={MusicPlayerStyles.songArtist}>{trackArtist}</Text>

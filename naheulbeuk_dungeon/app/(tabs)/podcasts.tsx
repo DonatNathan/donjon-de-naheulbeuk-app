@@ -28,17 +28,6 @@ type EpisodeProps = {
 	}
 }
 
-const imageMap = {
-  main: require("../../assets/images/main.png"),
-  nain: require("../../assets/images/nain.png"),
-  elfe: require("../../assets/images/elfe.png"),
-  barbare: require("../../assets/images/barbare.png"),
-  magicienne: require("../../assets/images/magicienne.png"),
-  ogre: require("../../assets/images/ogre.png"),
-};
-
-type ImageKey = keyof typeof imageMap;
-
 const SearchBar: React.FC<SearchProps> = ({search, setSearch}) => {
 	return (
 		<View style={LibraryStyles.searchBar}>
@@ -58,18 +47,9 @@ const SearchBar: React.FC<SearchProps> = ({search, setSearch}) => {
 
 const Episode: React.FC<EpisodeProps> = ({episode}) => {
 
-	const parseArtwork = (artwork: string): ImageKey | null  => {
-		const name = artwork.split("/").slice(-1)[0];
-		const key = name.split(".")[0];
-		return key in imageMap ? (key as ImageKey) : null;
-	}
-
-    const imageKey = parseArtwork(episode.artwork);
-  	const MyImage = imageKey ? imageMap[imageKey] : require("../../assets/images/main.png");
-
 	return (
 		<View style={LibraryStyles.episode}>
-			<Image source={MyImage} style={LibraryStyles.episodeImage} />
+			<Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${episode.artwork}` }} style={LibraryStyles.episodeImage} />
 			<Text style={LibraryStyles.episodeTitle}>{episode.title}</Text>
 			<Text style={LibraryStyles.episodeArtist}>{episode.artist}</Text>
 		</View>

@@ -1,26 +1,34 @@
 [
     {
-        "content": "On s'les gèles ici !\"\nL'Aventurier."
+        "content": "On s'les gèles ici !\"\nL'Aventurier.",
+        "image": "main.png"
     },
     {
-        "content": "Tiens ! Voilà quelqu'un !\"\nL'Aventurier."
+        "content": "Tiens ! Voilà quelqu'un !\"\nL'Aventurier.",
+        "image": "main.png"
     },
     {
-        "content": "Je suis un nain connasse !\"\nLe Nain."
+        "content": "Je suis un nain connasse !\"\nLe Nain.",
+        "image": "nain.png"
     },
     {
-        "content": "Un nain ?! Mais quelle horreur !\"\nL'Efle."
+        "content": "Un nain ?! Mais quelle horreur !\"\nL'Efle.",
+        "image": "elfe.png"
     },
     {
-        "content": "Tiens donc, un paysan.\"\nLe Voleur."
+        "content": "Tiens donc, un paysan.\"\nLe Voleur.",
+        "image": "ogre.png"
     },
     {
-        "content": "Mais bien sûr qu'on a de la boisson.\"\nLe Nain."
+        "content": "Mais bien sûr qu'on a de la boisson.\"\nLe Nain.",
+        "image": "nain.png"
     },
     {
-        "content": "Les ogres sont parfois poètes.\"\nLa Magicienne."
+        "content": "Les ogres sont parfois poètes.\"\nLa Magicienne.",
+        "image": "magicienne.png"
     },
     {
-        "content": "Tu veux vraiment mon poing sur la gueule ?\"\nL'Aventurier."
+        "content": "Tu veux vraiment mon poing sur la gueule ?\"\nL'Aventurier.",
+        "image": "main.png"
     }
 ]

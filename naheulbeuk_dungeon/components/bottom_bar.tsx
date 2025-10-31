@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as NavigationBar from "expo-navigation-bar";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { COLORS } from "../other/colors";
 import { useRouter } from "expo-router";

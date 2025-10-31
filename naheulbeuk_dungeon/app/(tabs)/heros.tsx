@@ -6,26 +6,17 @@ import BottomBar from "@/components/bottom_bar";
 import { COLORS } from "../../other/colors";
 
 type HeroProps = {
-  path: keyof typeof ImageMap;
+  path: string;
   name: string;
-};
-
-const ImageMap = {
-  main: require('../../assets/images/main.png'),
-  nain: require('../../assets/images/nain.png'),
-  elfe: require('../../assets/images/elfe.png'),
-  barbare: require('../../assets/images/barbare.png'),
-  magicienne: require('../../assets/images/magicienne.png'),
-  ogre: require('../../assets/images/ogre.png'),
 };
 
 const Hero: React.FC<HeroProps> = ({path, name}) => {
 
-    const MyImage = ImageMap[path];
+    const MyImage = `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${path}.png`;
 
     return (
         <View style={HeroesStyles.heroContainer}>
-            <Image source={MyImage} style={HeroesStyles.heroPicture} />
+            <Image source={{ uri: MyImage }} style={HeroesStyles.heroPicture} />
             <Text style={HeroesStyles.heroName}>{name}</Text>
         </View>
     );
@@ -36,7 +27,7 @@ const Heroes = () => {
         <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
             <View style={{ paddingHorizontal: 20 }}>
                 <Text style={HeroesStyles.headerText}>Héros</Text>
-                <Image source={require("../../assets/images/penofchaos.png")} style={HeroesStyles.mainImage} />
+                <Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/penofchaos.png` }} style={HeroesStyles.mainImage} />
                 <Text style={HeroesStyles.username} onPress={() => Linking.openURL("http://www.penofchaos.com/warham/donjon.htm")}>Pen Of Chaos</Text>
                 <Text style={HeroesStyles.master}>Maître du Donjon</Text>
                 <View style={HeroesStyles.heroList}>
