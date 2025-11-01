@@ -6,26 +6,17 @@ import BottomBar from "@/components/bottom_bar";
 import { COLORS } from "../../other/colors";
 
 type HeroProps = {
-  path: keyof typeof ImageMap;
+  path: string;
   name: string;
-};
-
-const ImageMap = {
-  main: require('../../assets/images/main.png'),
-  nain: require('../../assets/images/nain.png'),
-  elfe: require('../../assets/images/elfe.png'),
-  barbare: require('../../assets/images/barbare.png'),
-  magicienne: require('../../assets/images/magicienne.png'),
-  ogre: require('../../assets/images/ogre.png'),
 };
 
 const Hero: React.FC<HeroProps> = ({path, name}) => {
 
-    const MyImage = ImageMap[path];
+    const MyImage = `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${path}.png`;
 
     return (
         <View style={HeroesStyles.heroContainer}>
-            <Image source={MyImage} style={HeroesStyles.heroPicture} />
+            <Image source={{ uri: MyImage }} style={HeroesStyles.heroPicture} />
             <Text style={HeroesStyles.heroName}>{name}</Text>
         </View>
     );
@@ -33,20 +24,20 @@ const Hero: React.FC<HeroProps> = ({path, name}) => {
 
 const Heroes = () => {
     return (
-        <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
-            <View style={{ paddingHorizontal: 20 }}>
-                <Text style={HeroesStyles.headerText}>Héros</Text>
-                <Image source={require("../../assets/images/penofchaos.png")} style={HeroesStyles.mainImage} />
+        <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingBottom: "20%", height: "100%", display: "flex", justifyContent: "space-around" }}>
+            <Text style={HeroesStyles.headerText}>Héros</Text>
+            <View>
+                <Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/penofchaos.png` }} style={HeroesStyles.mainImage} />
                 <Text style={HeroesStyles.username} onPress={() => Linking.openURL("http://www.penofchaos.com/warham/donjon.htm")}>Pen Of Chaos</Text>
                 <Text style={HeroesStyles.master}>Maître du Donjon</Text>
-                <View style={HeroesStyles.heroList}>
-                    <Hero path="main" name="Aventurier" />
-                    <Hero path={"nain"} name={"Nain"} />
-                    <Hero path={"elfe"} name={"Elfe"} />
-                    <Hero path={"barbare"} name={"Barbare"} />
-                    <Hero path={"magicienne"} name={"Magicienne"} />
-                    <Hero path={"ogre"} name={"Ogre"} />
-                </View>
+            </View>
+            <View style={HeroesStyles.heroList}>
+                <Hero path="main" name="Aventurier" />
+                <Hero path={"nain"} name={"Nain"} />
+                <Hero path={"elfe"} name={"Elfe"} />
+                <Hero path={"barbare"} name={"Barbare"} />
+                <Hero path={"magicienne"} name={"Magicienne"} />
+                <Hero path={"ogre"} name={"Ogre"} />
             </View>
             <BottomBar />
         </View>
@@ -65,14 +56,14 @@ const HeroesStyles = StyleSheet.create({
         width: 150,
         borderRadius: 100,
         alignSelf: "center",
-        marginTop: 30
+        marginTop: "5%"
     },
     username: {
         textAlign: "center",
         fontWeight: "bold",
         fontSize: 20,
         color: COLORS.MainText,
-        marginTop: 10,
+        marginTop: "5%",
     },
     master: {
         color: COLORS.SecondText,

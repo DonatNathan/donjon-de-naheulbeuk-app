@@ -28,17 +28,6 @@ type EpisodeProps = {
 	}
 }
 
-const imageMap = {
-  main: require("../../assets/images/main.png"),
-  nain: require("../../assets/images/nain.png"),
-  elfe: require("../../assets/images/elfe.png"),
-  barbare: require("../../assets/images/barbare.png"),
-  magicienne: require("../../assets/images/magicienne.png"),
-  ogre: require("../../assets/images/ogre.png"),
-};
-
-type ImageKey = keyof typeof imageMap;
-
 const SearchBar: React.FC<SearchProps> = ({search, setSearch}) => {
 	return (
 		<View style={LibraryStyles.searchBar}>
@@ -58,18 +47,9 @@ const SearchBar: React.FC<SearchProps> = ({search, setSearch}) => {
 
 const Episode: React.FC<EpisodeProps> = ({episode}) => {
 
-	const parseArtwork = (artwork: string): ImageKey | null  => {
-		const name = artwork.split("/").slice(-1)[0];
-		const key = name.split(".")[0];
-		return key in imageMap ? (key as ImageKey) : null;
-	}
-
-    const imageKey = parseArtwork(episode.artwork);
-  	const MyImage = imageKey ? imageMap[imageKey] : require("../../assets/images/main.png");
-
 	return (
 		<View style={LibraryStyles.episode}>
-			<Image source={MyImage} style={LibraryStyles.episodeImage} />
+			<Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${episode.artwork}` }} style={LibraryStyles.episodeImage} />
 			<Text style={LibraryStyles.episodeTitle}>{episode.title}</Text>
 			<Text style={LibraryStyles.episodeArtist}>{episode.artist}</Text>
 		</View>
@@ -82,22 +62,20 @@ const Library: React.FC<LibraryProps> = ({setPage, setTrack}) => {
 
     return (
 		<View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingTop: 50 }}>
-			<View style={{ paddingHorizontal: 20 }}>
-				<Text style={LibraryStyles.headerText}>Podcasts</Text>
-				<SearchBar search={search} setSearch={setSearch} />
-				<ScrollView contentContainerStyle={[LibraryStyles.episodeList, { paddingBottom: 250 }]}>
-					{podcasts.map((value, index) => {
-						{
-							if (value.title.includes(search) || value.artist.includes(search)) 
-								return (
-									<TouchableOpacity key={index} onPress={() => {setTrack(index); setPage("Listening")}}>
-										<Episode episode={value}/>
-									</TouchableOpacity>	
-								);
-						}
-					})}
-				</ScrollView>
-			</View>
+			<Text style={LibraryStyles.headerText}>Podcasts</Text>
+			<SearchBar search={search} setSearch={setSearch} />
+			<ScrollView contentContainerStyle={[LibraryStyles.episodeList, { paddingBottom: 100 }]}>
+				{podcasts.map((value, index) => {
+					{
+						if (value.title.includes(search) || value.artist.includes(search)) 
+							return (
+								<TouchableOpacity key={index} onPress={() => {setTrack(index); setPage("Listening")}} style={{marginVertical: 10}}>
+									<Episode episode={value}/>
+								</TouchableOpacity>	
+							);
+					}
+				})}
+			</ScrollView>
 			<BottomBar />
 		</View>
 	);

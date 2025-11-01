@@ -1,26 +1,94 @@
 [
     {
-        "content": "On s'les gèles ici !\"\nL'Aventurier."
+        "content": "On s'les gèles ici !\"\nL'Aventurier.",
+        "image": "main.png"
     },
     {
-        "content": "Tiens ! Voilà quelqu'un !\"\nL'Aventurier."
+        "content": "Tiens ! Voilà quelqu'un !\"\nL'Aventurier.",
+        "image": "main.png"
     },
     {
-        "content": "Je suis un nain connasse !\"\nLe Nain."
+        "content": "Eh ouais je suis l'nain. Ça s'voit !\"\nLe Nain.",
+        "image": "nain.png"
     },
     {
-        "content": "Un nain ?! Mais quelle horreur !\"\nL'Efle."
+        "content": "Il a pas l'air terrible.\"\nLe Nain.",
+        "image": "nain.png"
     },
     {
-        "content": "Tiens donc, un paysan.\"\nLe Voleur."
+        "content": "Je suis un nain connasse !\"\nLe Nain.",
+        "image": "nain.png"
     },
     {
-        "content": "Mais bien sûr qu'on a de la boisson.\"\nLe Nain."
+        "content": "Un nain ?! Mais quelle horreur !\"\nL'Efle.",
+        "image": "elfe.png"
     },
     {
-        "content": "Les ogres sont parfois poètes.\"\nLa Magicienne."
+        "content": "Vos gueules !\"\nL'Aventurier.",
+        "image": "main.png"
     },
     {
-        "content": "Tu veux vraiment mon poing sur la gueule ?\"\nL'Aventurier."
+        "content": "Y'a un mec bizarre qui s'approche.\"\nL'Aventurier.",
+        "image": "main.png"
+    },
+    {
+        "content": "Oh ! Un monstreee !\"\nL'Efle.",
+        "image": "elfe.png"
+    },
+    {
+        "content": "Zag zaaag.\"\nL'Ogre.",
+        "image": "ogre.png"
+    },
+    {
+        "content": "Mais on comprend rien quand y parle !\"\nLe Nain.",
+        "image": "nain.png"
+    },
+    {
+        "content": "Tiens donc, un paysan.\"\nLe Voleur.",
+        "image": "ogre.png"
+    },
+    {
+        "content": "Tarlouze !\"\nLe Voleur.",
+        "image": "barbare.png"
+    },
+    {
+        "content": "Mais bien sûr qu'on a d'la boisson.\"\nLe Nain.",
+        "image": "nain.png"
+    },
+    {
+        "content": "Mais tu vas la fermer oui ?!\"\nL'Aventurier.",
+        "image": "main.png"
+    },
+    {
+        "content": "Mais quel chiant ce nain !\"\nL'Aventurier.",
+        "image": "main.png"
+    },
+    {
+        "content": "Il a envie d'chier.\"\nLa Magicienne.",
+        "image": "magicienne.png"
+    },
+    {
+        "content": "Les ogres sont parfois poètes.\"\nLa Magicienne.",
+        "image": "magicienne.png"
+    },
+    {
+        "content": "Tu veux vraiment mon poing sur la gueule ?\"\nL'Aventurier.",
+        "image": "main.png"
+    },
+    {
+        "content": "Akoula Miam Miam.\"\nL'Ogre.",
+        "image": "ogre.png"
+    },
+    {
+        "content": "C'est vraiment un ventre cet ogre.\"\nL'Efle.",
+        "image": "elfe.png"
+    },
+    {
+        "content": "Aucune idée. C'est la fortune qui nous intéresse.\"\nL'Aventurier.",
+        "image": "main.png"
+    },
+    {
+        "content": "Qu'est c'qu'il a encore l'ahuri ?!\"\nL'Aventurier.",
+        "image": "main.png"
     }
 ]
