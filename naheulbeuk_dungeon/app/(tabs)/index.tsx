@@ -1,84 +1,298 @@
-import React, { useEffect } from "react";
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { Image, StyleSheet, Text, View } from "react-native";
-import { Link } from "expo-router";
-
-import BottomBar from "@/components/bottom_bar";
+import React, { useEffect, useRef, useState } from "react";
+import {
+    Animated,
+    Image,
+    Platform,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    useWindowDimensions,
+    View,
+} from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useRouter } from "expo-router";
 
 import { COLORS } from "../../other/colors";
+import Sentences from "../../assets/files/sentences.json";
 
-import Sentences from '../../assets/files/sentences.json';
+// ─── Web hover styles ─────────────────────────────────────────────────────────
+if (Platform.OS === "web" && typeof document !== "undefined") {
+    const id = "home-hover-styles";
+    if (!document.getElementById(id)) {
+        const el = document.createElement("style");
+        el.id = id;
+        el.textContent = `
+      .enter-btn {
+        cursor: pointer;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    opacity 0.2s ease,
+                    box-shadow 0.2s ease;
+        text-decoration: none;
+      }
+      .enter-btn:hover {
+        transform: scale(1.04) translateY(-3px);
+        opacity: 0.92;
+      }
+      .enter-btn:active {
+        transform: scale(0.96);
+        opacity: 0.75;
+        transition: transform 0.08s ease, opacity 0.08s ease;
+      }
+    `;
+        document.head.appendChild(el);
+    }
+}
 
-const RandomContent = () => {
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const BASE = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
+const img = (path: string) => `${BASE}images/${path}`;
 
-    const randomIndex = Math.floor(Math.random() * Sentences.length)
+const useFadeIn = (delay: number) => {
+    const opacity = useRef(new Animated.Value(0)).current;
+    const translateY = useRef(new Animated.Value(30)).current;
+    useEffect(() => {
+        Animated.parallel([
+            Animated.timing(opacity, { toValue: 1, duration: 500, delay, useNativeDriver: true }),
+            Animated.spring(translateY, { toValue: 0, delay, tension: 55, friction: 9, useNativeDriver: true }),
+        ]).start();
+    }, []);
+    return { opacity, transform: [{ translateY }] };
+};
+
+// ─── Ornamental divider ───────────────────────────────────────────────────────
+const Divider = () => (
+    <View style={div.row}>
+        <View style={div.line} />
+        <Text style={div.gem}>✦</Text>
+        <View style={div.line} />
+    </View>
+);
+const div = StyleSheet.create({
+    row: { flexDirection: "row", alignItems: "center", marginVertical: 20, paddingHorizontal: 32 },
+    line: { flex: 1, height: 1, backgroundColor: COLORS.MainText, opacity: 0.18 },
+    gem: { color: COLORS.MainText, opacity: 0.4, marginHorizontal: 12, fontSize: 12 },
+});
+
+// ─── Random quote + character ─────────────────────────────────────────────────
+const RandomContent = ({ width }: { width: number }) => {
+    const [entry] = useState(() => Sentences[Math.floor(Math.random() * Sentences.length)]);
+    const anim = useFadeIn(350);
+    const imgSize = Math.min(width * 0.38, 180);
+
+    // Subtle infinite float for the character image
+    const floatY = useRef(new Animated.Value(0)).current;
+    useEffect(() => {
+        const loop = Animated.loop(
+            Animated.sequence([
+                Animated.timing(floatY, { toValue: -8, duration: 2200, useNativeDriver: true }),
+                Animated.timing(floatY, { toValue: 0, duration: 2200, useNativeDriver: true }),
+            ])
+        );
+        const timer = setTimeout(() => loop.start(), 800);
+        return () => { clearTimeout(timer); loop.stop(); };
+    }, []);
 
     return (
-        <View>
-            <Text style={HomeStyles.randomSentence}>"{Sentences[randomIndex].content}</Text>
-            <Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/${Sentences[randomIndex].image}` }} style={HomeStyles.randomImage} />
-        </View>
+        <Animated.View style={[styles.quoteBlock, anim]}>
+            {/* Quote marks */}
+            <Text style={styles.quoteMark}>"</Text>
+            <Text style={styles.quoteText}>{entry.content}</Text>
+            <Text style={[styles.quoteMark, styles.quoteMarkClose]}>"</Text>
+
+            <Animated.Image
+                source={{ uri: img(entry.image) }}
+                style={[
+                    styles.randomImage,
+                    { width: imgSize, height: imgSize, borderRadius: imgSize / 2 },
+                    { transform: [{ translateY: floatY }] },
+                ]}
+                resizeMode="cover"
+            />
+        </Animated.View>
     );
 };
 
+// ─── Enter button ─────────────────────────────────────────────────────────────
 const EnterButton = () => {
+    const router = useRouter();
+    const anim = useFadeIn(520);
+    const scale = useRef(new Animated.Value(1)).current;
+
+    const pressIn = () => {
+        if (Platform.OS === "web") return;
+        Animated.spring(scale, { toValue: 0.95, useNativeDriver: true, tension: 200, friction: 10 }).start();
+    };
+    const pressOut = () => {
+        if (Platform.OS === "web") return;
+        Animated.spring(scale, { toValue: 1, useNativeDriver: true, tension: 80, friction: 5 }).start();
+    };
+
+    const inner = (
+        <Animated.View style={[styles.button, anim, { transform: [...(anim.transform as any), { scale }] }]}>
+            <Text style={styles.buttonText}>Entrer dans le Donjon</Text>
+            <View style={styles.arrowCircle}>
+                <Ionicons name="arrow-forward" size={18} color={COLORS.MainBack} />
+            </View>
+        </Animated.View>
+    );
+
+    if (Platform.OS === "web") {
+        return (
+            <div className="enter-btn" onClick={() => router.push("/podcasts" as any)} style={{ display: "flex", justifyContent: "center" }}>
+                {inner}
+            </div>
+        );
+    }
 
     return (
-        <Link href="/podcasts" style={HomeStyles.button}>
-          <View style={HomeStyles.buttonView}>
-              <Text>Entrer dans le Donjon</Text>
-              <Ionicons name="arrow-forward" size={30} color={COLORS.MainText} />
-          </View>
-        </Link>
+        <Pressable onPress={() => router.push("/podcasts" as any)} onPressIn={pressIn} onPressOut={pressOut}>
+            {inner}
+        </Pressable>
     );
 };
 
+// ─── Home page ────────────────────────────────────────────────────────────────
 export default function Home() {
+    const { width, height } = useWindowDimensions();
+    const logoAnim = useFadeIn(0);
+    const logoHeight = Math.min(height * 0.18, 140);
+    const logoWidth = Math.min(width * 0.78, 380);
 
     return (
-        <View style={{ flex: 1, backgroundColor: COLORS.MainBack, paddingBottom: "20%", height: "100%", display: "flex", justifyContent: "space-around" }}>
-            <Image source={{ uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}images/logo.png` }} style={HomeStyles.logo} resizeMode="contain" />
-            <RandomContent />
-            <EnterButton />
-            <BottomBar />
-        </View>
-    );
-};
+        <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={[styles.content, { paddingBottom: 120, minHeight: height }]}
+            showsVerticalScrollIndicator={false}
+        >
+            {/* ── Logo ── */}
+            <Animated.Image
+                source={{ uri: img("logo.png") }}
+                style={[styles.logo, logoAnim, { width: logoWidth, height: logoHeight }]}
+                resizeMode="contain"
+            />
 
-const HomeStyles = StyleSheet.create({
-    logo: {
-        width: "80%",
-        height: "20%",
-        alignSelf: "center"
+            {/* ── Eyebrow ── */}
+            <Animated.Text style={[styles.eyebrow, useFadeIn(120)]}>
+                Le podcast de l'aventure
+            </Animated.Text>
+
+            <Divider />
+
+            {/* ── Quote + character ── */}
+            <RandomContent width={width} />
+
+            <Divider />
+
+            {/* ── CTA ── */}
+            <EnterButton />
+        </ScrollView>
+    );
+}
+
+// ─── Styles ───────────────────────────────────────────────────────────────────
+const styles = StyleSheet.create({
+    scroll: {
+        flex: 1,
+        backgroundColor: COLORS.MainBack,
     },
-    randomSentence: {
+    content: {
+        paddingTop: 60,
+        paddingHorizontal: 24,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    // Logo
+    logo: {
+        alignSelf: "center",
+        marginBottom: 10,
+    },
+    eyebrow: {
+        color: COLORS.MainText,
+        opacity: 0.4,
+        fontSize: 11,
+        letterSpacing: 3,
+        textTransform: "uppercase",
+        textAlign: "center",
+    },
+
+    // Quote block
+    quoteBlock: {
+        alignItems: "center",
+        paddingHorizontal: 16,
+        width: "100%",
+    },
+    quoteMark: {
+        fontSize: 52,
+        color: COLORS.MainText,
+        opacity: 0.15,
+        lineHeight: 44,
+        alignSelf: "flex-start",
+        marginLeft: 16,
+    },
+    quoteMarkClose: {
+        alignSelf: "flex-end",
+        marginRight: 16,
+        marginTop: -8,
+    },
+    quoteText: {
         textAlign: "center",
         fontStyle: "italic",
         color: COLORS.MainText,
-        fontSize: 14,
+        fontSize: 15,
+        lineHeight: 24,
+        opacity: 0.85,
+        paddingHorizontal: 8,
     },
     randomImage: {
-        marginTop: "5%",
-        width: 150,
-        height: 150,
-        alignSelf: "center",
+        marginTop: 24,
+        borderWidth: 1.5,
+        borderColor: COLORS.MainText,
+        opacity: 0.9,
+        // Glow
+        shadowColor: COLORS.MainText,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.25,
+        shadowRadius: 14,
+        elevation: 6,
     },
+
+    // Button
     button: {
         backgroundColor: COLORS.SecondBack,
-        width: "80%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingVertical: 16,
+        paddingLeft: 28,
+        paddingRight: 16,
+        borderRadius: 50,
         alignSelf: "center",
-        padding: 15,
-        borderRadius: 30,
-    },
-    buttonView: {
-      display: "flex",
-      width: "100%",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-evenly",
+        width: "80%",
+        maxWidth: 340,
+        borderWidth: 1,
+        borderColor: COLORS.MainText,
+        // Shadow
+        shadowColor: COLORS.MainText,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+        elevation: 5,
     },
     buttonText: {
+        color: COLORS.MainText,
         fontSize: 15,
-        fontWeight: "bold"
-    }
+        fontWeight: "700",
+        letterSpacing: 0.5,
+    },
+    arrowCircle: {
+        width: 34,
+        height: 34,
+        borderRadius: 17,
+        backgroundColor: COLORS.MainText,
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: 12,
+    },
 });
