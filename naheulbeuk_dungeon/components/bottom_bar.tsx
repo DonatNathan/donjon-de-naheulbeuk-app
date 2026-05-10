@@ -289,9 +289,12 @@ const BottomBar = () => {
 const styles = StyleSheet.create({
     barView: {
         backgroundColor: COLORS.SecondBack,
-        position: "absolute",
+        position: Platform.OS === "web" ? "fixed" : "absolute",
         bottom: 0,
         width: "100%",
+        left: 0,
+        right: 0,
+        zIndex: 999, // important for web stacking
         shadowColor: "#000",
         shadowOffset: { width: 0, height: -4 },
         shadowOpacity: 0.35,

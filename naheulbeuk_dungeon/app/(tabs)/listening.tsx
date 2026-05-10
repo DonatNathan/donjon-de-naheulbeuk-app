@@ -5,6 +5,7 @@ import {
     Platform,
     Pressable,
     StyleSheet,
+	ScrollView,
     Text,
     useWindowDimensions,
     View,
@@ -221,7 +222,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ setPage, track }) => {
     }, [trackIndex]);
 
     // Responsive artwork size
-    const artSize = Math.min(width * 0.68, 300);
+    const artSize = Math.min(width * 0.5, 300);
 
     const headerAnim = useFadeIn(0);
     const artworkAnim = useFadeIn(100);
@@ -232,7 +233,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ setPage, track }) => {
     const progress = soundDuration > 0 ? soundPosition / soundDuration : 0;
 
     return (
-        <View style={styles.screen}>
+        <ScrollView
+			style={styles.scroll}
+			contentContainerStyle={[
+				styles.screen,
+				{ paddingBottom: 120, minHeight: height },
+			]}
+			showsVerticalScrollIndicator={false}
+		>
             {/* ── Header ── */}
             <Animated.View style={[styles.header, headerAnim]}>
                 {Platform.OS === "web" ? (
@@ -314,12 +322,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ setPage, track }) => {
                     onPress={() => setTrackIndex((i) => Math.min(i + 1, podcastsCount - 1))}
                 />
             </Animated.View>
-        </View>
+        </ScrollView>
     );
 };
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
+	scroll: {
+        flex: 1,
+        backgroundColor: COLORS.MainBack,
+    },
+    content: {
+        paddingTop: 60,
+        paddingHorizontal: 24,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     screen: {
         flex: 1,
         backgroundColor: COLORS.MainBack,
@@ -377,6 +395,7 @@ const styles = StyleSheet.create({
     songInfo: {
         alignItems: "center",
         paddingHorizontal: 32,
+		paddingTop: 24,
     },
     songTitle: {
         fontSize: 20,
