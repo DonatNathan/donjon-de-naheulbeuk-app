@@ -16,6 +16,7 @@ import { useFocusEffect } from "expo-router";
 
 import { COLORS } from "../../other/colors";
 import podcasts from "../../assets/files/podcasts.json";
+import { IoArrowBack, IoPauseCircle, IoPlayCircle, IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
 
 // ─── Web hover styles ─────────────────────────────────────────────────────────
 if (Platform.OS === "web" && typeof document !== "undefined") {
@@ -59,6 +60,33 @@ type MusicPlayerProps = {
     track: number;
 };
 
+const renderIcon = (name: string, size: number, color: string) => {
+    if (Platform.OS === "web") {
+        switch (name) {
+            case "play-skip-back":
+                return <IoPlaySkipBack size={size} color={color} />;
+            case "play-skip-forward":
+                return <IoPlaySkipForward size={size} color={color} />;
+            case "pause-circle":
+                return <IoPauseCircle size={size} color={color} />;
+            case "play-circle":
+                return <IoPlayCircle size={size} color={color} />;
+            case "arrow-back":
+                return <IoArrowBack size={size} color={color} />;
+            default:
+                return null;
+        }
+    }
+
+    return (
+        <Ionicons
+            name={name as any}
+            size={size}
+            color={color}
+        />
+    );
+};
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const BASE = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
 const formatTime = (s: number) =>
@@ -99,14 +127,14 @@ const CtrlBtn = ({
     if (Platform.OS === "web") {
         return (
             <button className="ctrl-btn" onClick={onPress}>
-                <Ionicons name={name} size={size} color={COLORS.MainText} />
+                {renderIcon(name, size, COLORS.MainText)}
             </button>
         );
     }
     return (
         <Pressable onPress={onPress} onPressIn={pressIn} onPressOut={pressOut}>
             <Animated.View style={{ transform: [{ scale }] }}>
-                <Ionicons name={name} size={size} color={COLORS.MainText} />
+                {renderIcon(name, size, COLORS.MainText)}
             </Animated.View>
         </Pressable>
     );
@@ -209,11 +237,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ setPage, track }) => {
             <Animated.View style={[styles.header, headerAnim]}>
                 {Platform.OS === "web" ? (
                     <button className="back-btn" onClick={() => { player.pause(); setPage("Library"); }}>
-                        <Ionicons name="arrow-back" size={24} color={COLORS.MainText} />
+                        {renderIcon("arrow-back", 24, COLORS.MainText)}
                     </button>
                 ) : (
                     <Pressable onPress={() => { player.pause(); setPage("Library"); }} style={styles.backBtn}>
-                        <Ionicons name="arrow-back" size={24} color={COLORS.MainText} />
+                        {renderIcon("arrow-back", 24, COLORS.MainText)}
                     </Pressable>
                 )}
 

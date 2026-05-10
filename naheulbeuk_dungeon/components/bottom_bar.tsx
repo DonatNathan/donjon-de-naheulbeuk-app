@@ -12,6 +12,16 @@ import { useRouter, usePathname } from "expo-router";
 
 import { COLORS } from "../other/colors";
 
+// Web icons (react-icons)
+import {
+    IoHome,
+    IoHomeOutline,
+    IoFolder,
+    IoFolderOutline,
+    IoPeople,
+    IoPeopleOutline,
+} from "react-icons/io5";
+
 // expo-navigation-bar is Android-only — skip on web/iOS
 const setNavBarHidden = async () => {
     if (Platform.OS === "android") {
@@ -21,8 +31,6 @@ const setNavBarHidden = async () => {
 };
 
 // ─── Web-only hover style injection ──────────────────────────────────────────
-// Injects a <style> tag once so CSS :hover transitions work on web.
-// On native this block is never reached.
 if (Platform.OS === "web" && typeof document !== "undefined") {
     const styleId = "bottom-bar-hover-styles";
     if (!document.getElementById(styleId)) {
@@ -50,20 +58,39 @@ if (Platform.OS === "web" && typeof document !== "undefined") {
     }
 }
 
-// ─── Individual tab button ────────────────────────────────────────────────────
+// ─── Cross-platform icon renderer ────────────────────────────────────────────
+const renderIcon = (icon: string, isActive: boolean, size = 26, color = "black") => {
+    if (Platform.OS === "web") {
+        const map: any = {
+            home: isActive ? IoHome : IoHomeOutline,
+            folder: isActive ? IoFolder : IoFolderOutline,
+            people: isActive ? IoPeople : IoPeopleOutline,
+        };
+
+        const Icon = map[icon];
+        return Icon ? <Icon size={size} color={color} /> : null;
+    }
+
+    return (
+        <Ionicons
+            name={(isActive ? icon : `${icon}-outline`) as any}
+            size={size}
+            color={color}
+        />
+    );
+};
+
+// ─── Tab button ──────────────────────────────────────────────────────────────
 type TabButtonProps = {
-    icon: React.ComponentProps<typeof Ionicons>["name"];
+    icon: "home" | "folder" | "people";
     label: string;
     isActive: boolean;
     onPress: () => void;
 };
 
 const TabButton = ({ icon, label, isActive, onPress }: TabButtonProps) => {
-    // Press scale (native) — on web CSS handles it
     const scale = useRef(new Animated.Value(1)).current;
-    // Float bounce when tab becomes active
     const floatY = useRef(new Animated.Value(0)).current;
-    // Active glow/underline opacity
     const activeAnim = useRef(new Animated.Value(isActive ? 1 : 0)).current;
 
     useEffect(() => {
@@ -91,7 +118,6 @@ const TabButton = ({ icon, label, isActive, onPress }: TabButtonProps) => {
         }
     }, [isActive]);
 
-    // Native-only press handlers (web uses CSS :active)
     const handlePressIn = () => {
         if (Platform.OS === "web") return;
         Animated.spring(scale, {
@@ -112,6 +138,8 @@ const TabButton = ({ icon, label, isActive, onPress }: TabButtonProps) => {
         }).start();
     };
 
+    const color = isActive ? COLORS.MainText : `${COLORS.MainText}77`;
+
     const innerContent = (
         <Animated.View
             style={[
@@ -119,15 +147,11 @@ const TabButton = ({ icon, label, isActive, onPress }: TabButtonProps) => {
                 { transform: [{ scale }, { translateY: floatY }] },
             ]}
         >
-            {/* Active glow dot */}
             <Animated.View style={[styles.glowDot, { opacity: activeAnim }]} />
 
-            <Ionicons
-                name={isActive ? icon : (`${icon}-outline` as any)}
-                size={26}
-                color={isActive ? COLORS.MainText : `${COLORS.MainText}77`}
-                style={styles.icon}
-            />
+            <View style={styles.icon}>
+                {renderIcon(icon, isActive, 26, color)}
+            </View>
 
             <Animated.Text
                 style={[
@@ -144,7 +168,6 @@ const TabButton = ({ icon, label, isActive, onPress }: TabButtonProps) => {
                 {label}
             </Animated.Text>
 
-            {/* Active underline bar */}
             <Animated.View
                 style={[
                     styles.activeBar,
@@ -164,8 +187,6 @@ const TabButton = ({ icon, label, isActive, onPress }: TabButtonProps) => {
         </Animated.View>
     );
 
-    // On web: plain <div> with CSS class for :hover / :active.
-    // On native: Pressable with RN Animated handlers.
     if (Platform.OS === "web") {
         return (
             <div
@@ -194,27 +215,14 @@ const TabButton = ({ icon, label, isActive, onPress }: TabButtonProps) => {
     );
 };
 
-// ─── Tab definitions ──────────────────────────────────────────────────────────
+// ─── Tabs ─────────────────────────────────────────────────────────────────────
 const TABS = [
-    { icon: "home" as const, label: "Accueil", route: "/" },
-    { icon: "folder" as const, label: "Podcasts", route: "/(tabs)/podcasts" },
-    { icon: "people" as const, label: "Héros", route: "/(tabs)/heros" },
+    { icon: "home", label: "Accueil", route: "/" },
+    { icon: "folder", label: "Podcasts", route: "/(tabs)/podcasts" },
+    { icon: "people", label: "Héros", route: "/(tabs)/heros" },
 ];
 
-// ─── Bottom bar ───────────────────────────────────────────────────────────────
-// IMPORTANT: place <BottomBar /> in your root layout file (e.g. app/_layout.tsx),
-// outside of any <Stack> or <Tabs> navigator. That way it is never unmounted
-// during tab navigation, so the entrance animation only ever plays once.
-//
-// Example _layout.tsx:
-//   export default function RootLayout() {
-//     return (
-//       <SafeAreaProvider>
-//         <Stack screenOptions={{ headerShown: false }} />
-//         <BottomBar />          ← here, after the navigator
-//       </SafeAreaProvider>
-//     );
-//   }
+// ─── Bottom bar ──────────────────────────────────────────────────────────────
 const BottomBar = () => {
     const router = useRouter();
     const pathname = usePathname();
@@ -222,7 +230,6 @@ const BottomBar = () => {
 
     const slideY = useRef(new Animated.Value(80)).current;
     const barOpacity = useRef(new Animated.Value(0)).current;
-    // Guard so the entrance animation only fires on the very first mount
     const hasAnimated = useRef(false);
 
     useEffect(() => {
@@ -230,6 +237,7 @@ const BottomBar = () => {
 
         if (!hasAnimated.current) {
             hasAnimated.current = true;
+
             Animated.parallel([
                 Animated.spring(slideY, {
                     toValue: 0,
@@ -266,7 +274,7 @@ const BottomBar = () => {
                 {TABS.map((tab) => (
                     <TabButton
                         key={tab.route}
-                        icon={tab.icon}
+                        icon={tab.icon as any}
                         label={tab.label}
                         isActive={isActive(tab.route)}
                         onPress={() => router.push(tab.route as any)}

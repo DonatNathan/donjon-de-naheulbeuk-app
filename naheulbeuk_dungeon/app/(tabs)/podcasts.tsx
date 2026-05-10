@@ -16,6 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { COLORS } from "../../other/colors";
 import MusicPlayer from "./listening";
 import podcasts from "../../assets/files/podcasts.json";
+import { IoCloseCircleOutline, IoPlay, IoSearchOutline } from "react-icons/io5";
 
 // ─── Web hover styles ─────────────────────────────────────────────────────────
 if (Platform.OS === "web" && typeof document !== "undefined") {
@@ -86,10 +87,33 @@ const SEASONS: number[] = Array.from(
     )
 ).sort((a, b) => a - b);
 
+const renderIcon = (name: string, size: number, color: string) => {
+    if (Platform.OS === "web") {
+        switch (name) {
+            case "search-outline":
+                return <IoSearchOutline size={size} color={color} />;
+            case "close-circle":
+                return <IoCloseCircleOutline size={size} color={color} />;
+            case "play":
+                return <IoPlay size={size} color={color} />;
+            default:
+                return null;
+        }
+    }
+
+    return (
+        <Ionicons
+            name={name as any}
+            size={size}
+            color={color}
+        />
+    );
+};
+
 // ─── Search bar ───────────────────────────────────────────────────────────────
 const SearchBar = ({ search, setSearch }: { search: string; setSearch: (s: string) => void }) => (
     <View style={styles.searchBar}>
-        <Ionicons name="search-outline" size={16} color={`${COLORS.MainText}66`} style={{ marginLeft: 12 }} />
+        {renderIcon("search-outline", 16, `${COLORS.MainText}66`)}
         <TextInput
             value={search}
             onChangeText={setSearch}
@@ -99,7 +123,7 @@ const SearchBar = ({ search, setSearch }: { search: string; setSearch: (s: strin
         />
         {search.length > 0 && (
             <Pressable onPress={() => setSearch("")} style={{ paddingRight: 12 }}>
-                <Ionicons name="close-circle" size={16} color={`${COLORS.MainText}66`} />
+                {renderIcon("close-circle", 16, `${COLORS.MainText}66`)}
             </Pressable>
         )}
     </View>
@@ -122,6 +146,7 @@ const SeasonFilter = ({
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.chipRow}
+			style={{ paddingTop: 5 }}
         >
             {chips.map((chip) => {
                 const active = chip.value === selected;
@@ -188,7 +213,7 @@ const EpisodeCard = ({
                 {/* Play overlay */}
                 <View style={styles.playOverlay}>
                     <View style={styles.playCircle}>
-                        <Ionicons name="play" size={14} color={COLORS.MainBack} />
+                        {renderIcon("play", 14, COLORS.MainBack)}
                     </View>
                 </View>
             </View>
@@ -261,7 +286,7 @@ const Library: React.FC<LibraryProps> = ({ setPage, setTrack }) => {
             >
                 {filtered.length === 0 ? (
                     <View style={styles.empty}>
-                        <Ionicons name="search" size={32} color={`${COLORS.MainText}33`} />
+                        {renderIcon("search", 32, `${COLORS.MainText}33`)}
                         <Text style={styles.emptyText}>Aucun épisode trouvé</Text>
                     </View>
                 ) : (
@@ -343,6 +368,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.SecondBack,
         borderRadius: 14,
         marginHorizontal: 16,
+		paddingHorizontal: 12,
         marginBottom: 14,
         borderWidth: 1,
         borderColor: `${COLORS.MainText}18`,

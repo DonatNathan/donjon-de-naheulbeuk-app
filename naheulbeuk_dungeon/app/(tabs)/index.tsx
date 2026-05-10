@@ -16,6 +16,11 @@ import { useRouter } from "expo-router";
 import { COLORS } from "../../other/colors";
 import Sentences from "../../assets/files/sentences.json";
 
+// Web icons (react-icons)
+import {
+    IoArrowForward,
+} from "react-icons/io5";
+
 // ─── Web hover styles ─────────────────────────────────────────────────────────
 if (Platform.OS === "web" && typeof document !== "undefined") {
     const id = "home-hover-styles";
@@ -48,19 +53,42 @@ if (Platform.OS === "web" && typeof document !== "undefined") {
 const BASE = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
 const img = (path: string) => `${BASE}images/${path}`;
 
+// ─── Fade hook ────────────────────────────────────────────────────────────────
 const useFadeIn = (delay: number) => {
     const opacity = useRef(new Animated.Value(0)).current;
     const translateY = useRef(new Animated.Value(30)).current;
+
     useEffect(() => {
         Animated.parallel([
-            Animated.timing(opacity, { toValue: 1, duration: 500, delay, useNativeDriver: true }),
-            Animated.spring(translateY, { toValue: 0, delay, tension: 55, friction: 9, useNativeDriver: true }),
+            Animated.timing(opacity, {
+                toValue: 1,
+                duration: 500,
+                delay,
+                useNativeDriver: true,
+            }),
+            Animated.spring(translateY, {
+                toValue: 0,
+                delay,
+                tension: 55,
+                friction: 9,
+                useNativeDriver: true,
+            }),
         ]).start();
     }, []);
+
     return { opacity, transform: [{ translateY }] };
 };
 
-// ─── Ornamental divider ───────────────────────────────────────────────────────
+// ─── Icon renderer (cross-platform) ──────────────────────────────────────────
+const renderIcon = (size = 18, color = "white") => {
+    if (Platform.OS === "web") {
+        return <IoArrowForward size={size} color={color} />;
+    }
+
+    return <Ionicons name="arrow-forward" size={size} color={color} />;
+};
+
+// ─── Divider ─────────────────────────────────────────────────────────────────
 const Divider = () => (
     <View style={div.row}>
         <View style={div.line} />
@@ -68,34 +96,54 @@ const Divider = () => (
         <View style={div.line} />
     </View>
 );
+
 const div = StyleSheet.create({
-    row: { flexDirection: "row", alignItems: "center", marginVertical: 20, paddingHorizontal: 32 },
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginVertical: 20,
+        paddingHorizontal: 32,
+    },
     line: { flex: 1, height: 1, backgroundColor: COLORS.MainText, opacity: 0.18 },
     gem: { color: COLORS.MainText, opacity: 0.4, marginHorizontal: 12, fontSize: 12 },
 });
 
-// ─── Random quote + character ─────────────────────────────────────────────────
+// ─── Random content ──────────────────────────────────────────────────────────
 const RandomContent = ({ width }: { width: number }) => {
-    const [entry] = useState(() => Sentences[Math.floor(Math.random() * Sentences.length)]);
+    const [entry] = useState(
+        () => Sentences[Math.floor(Math.random() * Sentences.length)]
+    );
+
     const anim = useFadeIn(350);
     const imgSize = Math.min(width * 0.38, 180);
 
-    // Subtle infinite float for the character image
     const floatY = useRef(new Animated.Value(0)).current;
+
     useEffect(() => {
         const loop = Animated.loop(
             Animated.sequence([
-                Animated.timing(floatY, { toValue: -8, duration: 2200, useNativeDriver: true }),
-                Animated.timing(floatY, { toValue: 0, duration: 2200, useNativeDriver: true }),
+                Animated.timing(floatY, {
+                    toValue: -8,
+                    duration: 2200,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(floatY, {
+                    toValue: 0,
+                    duration: 2200,
+                    useNativeDriver: true,
+                }),
             ])
         );
+
         const timer = setTimeout(() => loop.start(), 800);
-        return () => { clearTimeout(timer); loop.stop(); };
+        return () => {
+            clearTimeout(timer);
+            loop.stop();
+        };
     }, []);
 
     return (
         <Animated.View style={[styles.quoteBlock, anim]}>
-            {/* Quote marks */}
             <Text style={styles.quoteMark}>"</Text>
             <Text style={styles.quoteText}>{entry.content}</Text>
             <Text style={[styles.quoteMark, styles.quoteMarkClose]}>"</Text>
@@ -104,7 +152,11 @@ const RandomContent = ({ width }: { width: number }) => {
                 source={{ uri: img(entry.image) }}
                 style={[
                     styles.randomImage,
-                    { width: imgSize, height: imgSize, borderRadius: imgSize / 2 },
+                    {
+                        width: imgSize,
+                        height: imgSize,
+                        borderRadius: imgSize / 2,
+                    },
                     { transform: [{ translateY: floatY }] },
                 ]}
                 resizeMode="cover"
@@ -113,7 +165,7 @@ const RandomContent = ({ width }: { width: number }) => {
     );
 };
 
-// ─── Enter button ─────────────────────────────────────────────────────────────
+// ─── Enter button ────────────────────────────────────────────────────────────
 const EnterButton = () => {
     const router = useRouter();
     const anim = useFadeIn(520);
@@ -121,70 +173,100 @@ const EnterButton = () => {
 
     const pressIn = () => {
         if (Platform.OS === "web") return;
-        Animated.spring(scale, { toValue: 0.95, useNativeDriver: true, tension: 200, friction: 10 }).start();
+        Animated.spring(scale, {
+            toValue: 0.95,
+            useNativeDriver: true,
+            tension: 200,
+            friction: 10,
+        }).start();
     };
+
     const pressOut = () => {
         if (Platform.OS === "web") return;
-        Animated.spring(scale, { toValue: 1, useNativeDriver: true, tension: 80, friction: 5 }).start();
+        Animated.spring(scale, {
+            toValue: 1,
+            useNativeDriver: true,
+            tension: 80,
+            friction: 5,
+        }).start();
     };
 
     const inner = (
-        <Animated.View style={[styles.button, anim, { transform: [...(anim.transform as any), { scale }] }]}>
+        <Animated.View
+            style={[
+                styles.button,
+                anim,
+                { transform: [...(anim.transform as any), { scale }] },
+            ]}
+        >
             <Text style={styles.buttonText}>Entrer dans le Donjon</Text>
+
             <View style={styles.arrowCircle}>
-                <Ionicons name="arrow-forward" size={18} color={COLORS.MainBack} />
+                {renderIcon(18, COLORS.MainBack)}
             </View>
         </Animated.View>
     );
 
     if (Platform.OS === "web") {
         return (
-            <div className="enter-btn" onClick={() => router.push("/podcasts" as any)} style={{ display: "flex", justifyContent: "center" }}>
+            <div
+                className="enter-btn"
+                onClick={() => router.push("/podcasts" as any)}
+                style={{ display: "flex", justifyContent: "center" }}
+            >
                 {inner}
             </div>
         );
     }
 
     return (
-        <Pressable onPress={() => router.push("/podcasts" as any)} onPressIn={pressIn} onPressOut={pressOut}>
+        <Pressable
+            onPress={() => router.push("/podcasts" as any)}
+            onPressIn={pressIn}
+            onPressOut={pressOut}
+        >
             {inner}
         </Pressable>
     );
 };
 
-// ─── Home page ────────────────────────────────────────────────────────────────
+// ─── Home ─────────────────────────────────────────────────────────────────────
 export default function Home() {
     const { width, height } = useWindowDimensions();
     const logoAnim = useFadeIn(0);
+
     const logoHeight = Math.min(height * 0.18, 140);
     const logoWidth = Math.min(width * 0.78, 380);
 
     return (
         <ScrollView
             style={styles.scroll}
-            contentContainerStyle={[styles.content, { paddingBottom: 120, minHeight: height }]}
+            contentContainerStyle={[
+                styles.content,
+                { paddingBottom: 120, minHeight: height },
+            ]}
             showsVerticalScrollIndicator={false}
         >
-            {/* ── Logo ── */}
             <Animated.Image
                 source={{ uri: img("logo.png") }}
-                style={[styles.logo, logoAnim, { width: logoWidth, height: logoHeight }]}
+                style={[
+                    styles.logo,
+                    logoAnim,
+                    { width: logoWidth, height: logoHeight },
+                ]}
                 resizeMode="contain"
             />
 
-            {/* ── Eyebrow ── */}
             <Animated.Text style={[styles.eyebrow, useFadeIn(120)]}>
                 Le podcast de l'aventure
             </Animated.Text>
 
             <Divider />
 
-            {/* ── Quote + character ── */}
             <RandomContent width={width} />
 
             <Divider />
 
-            {/* ── CTA ── */}
             <EnterButton />
         </ScrollView>
     );
@@ -203,7 +285,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
-    // Logo
     logo: {
         alignSelf: "center",
         marginBottom: 10,
@@ -217,7 +298,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 
-    // Quote block
     quoteBlock: {
         alignItems: "center",
         paddingHorizontal: 16,
@@ -250,7 +330,6 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         borderColor: COLORS.MainText,
         opacity: 0.9,
-        // Glow
         shadowColor: COLORS.MainText,
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.25,
@@ -258,7 +337,6 @@ const styles = StyleSheet.create({
         elevation: 6,
     },
 
-    // Button
     button: {
         backgroundColor: COLORS.SecondBack,
         flexDirection: "row",
@@ -273,7 +351,6 @@ const styles = StyleSheet.create({
         maxWidth: 340,
         borderWidth: 1,
         borderColor: COLORS.MainText,
-        // Shadow
         shadowColor: COLORS.MainText,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
